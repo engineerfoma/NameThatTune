@@ -1,0 +1,1 @@
+export const apiPath = 'http://212.67.8.186:8000/api'
