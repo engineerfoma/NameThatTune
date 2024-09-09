@@ -1,30 +1,22 @@
 <template>
   <div class="row d-flex align-center">
     <div class="row__wrapper">
-      <!-- <v-img
-        class="row__img d-flex align-center justify-center"
-        :class="{ row__border_active: data.active }"
-        :width="data.width"
-        aspectRatio="16/9"
-        height="124"
-        src="@/assets/icons/border.svg"
-      /> -->
       <svg
         class="row__img d-flex align-center justify-center"
         :class="{ row__border_active: data.current }"
-        height="134"
-        viewBox="0 0 556 134"
+        width="425"
+        height="120"
+        viewBox="0 0 425 120"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M-1 5H555L534.495 129H-1"
+          d="M0 5H420L402.311 115H0"
           stroke="white"
           stroke-width="10"
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-dasharray="1 30"
-          transform="scale(1)"
+          stroke-dasharray="1 37"
         />
       </svg>
       <span
@@ -41,7 +33,7 @@
     >
       <v-img
         class="row__line"
-        minWidth="119"
+        minWidth="100"
         height="10"
         cover
         src="@/assets/icons/line.png"
@@ -50,7 +42,7 @@
       <v-img
         v-if="note === data.active"
         class="row__note"
-        width="170"
+        width="137"
         cover
         src="@/assets/imgs/note-active.png"
       >
@@ -64,7 +56,7 @@
       <v-img
         v-else-if="data.current"
         class="row__note"
-        width="170"
+        width="137"
         cover
         src="@/assets/imgs/note-current.png"
       >
@@ -78,7 +70,7 @@
       <v-img
         v-else
         class="row__note"
-        width="170"
+        width="137"
         cover
         src="@/assets/imgs/note.png"
       >
@@ -121,7 +113,7 @@ defineProps({
     font-size: 43px;
     font-weight: 500;
     color: white;
-    padding-top: 60px;
+    padding-top: 43px;
     margin-right: 35px;
     width: fit-content;
     overflow: hidden;
@@ -136,13 +128,13 @@ defineProps({
   }
 
   &__img {
-    margin-top: 56px;
+    margin-top: 40px;
     margin-right: 35px;
   }
 
   &__line {
-    margin-top: 56px;
-    margin-right: 28px;
+    margin-top: 40px;
+    margin-right: 24px;
   }
 
   &__note {
@@ -153,8 +145,8 @@ defineProps({
       top: 50%;
       border-radius: 50%;
       background-color: #ffffff33;
-      width: 65px;
-      height: 65px;
+      width: 52px;
+      height: 52px;
       display: flex;
       justify-content: center;
       align-items: center;

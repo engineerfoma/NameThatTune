@@ -1,5 +1,5 @@
 <template>
-  <header class="header d-flex">
+  <header class="header d-flex" :class="{header__three: three}">
     <img
       width="211"
       cover
@@ -15,6 +15,11 @@
 
 <script setup>
 import TotalBlock from './TotalBlock.vue'
+
+defineProps({
+  three: Boolean
+})
+
 const teams = ref([
   {
     color: 'red',
@@ -52,6 +57,10 @@ const teams = ref([
   &__container {
     gap: 47px;
     overflow: scroll;
+  }
+
+  &__three {
+    margin-bottom: 35px;
   }
 }
 </style>

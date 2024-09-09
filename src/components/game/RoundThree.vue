@@ -1,7 +1,7 @@
 <template>
   <v-fade-transition>
     <div v-show="!expand">
-      <Header />
+      <Header three />
       <div
         class="body"
         v-for="(row, index) in rows"
@@ -15,7 +15,7 @@
 
 <script setup>
 import Header from '@/components/game/Header.vue'
-import Row from './Row/firstAndTwoRound/Row.vue'
+import Row from './Row/threeRound/Row.vue'
 defineProps({
   expand: {
     type: Boolean,
@@ -25,30 +25,34 @@ defineProps({
 
 const rows = ref([
   {
-    title: 'ХИТЫ 90-х',
-    songs: ['10', '15', '20', '30'],
+    title: 'ПЕСНЯ 1',
+    songs: ['3', '4', '5', '6', '7'],
   },
   {
-    title: 'ИМЕНА',
-    songs: ['10', '15', '20', '30'],
+    title: 'ПЕСНЯ 2',
+    songs: ['3', '4', '5', '6', '7'],
   },
   {
-    title: 'филипп лучезарный',
-    songs: ['10', '15', '20', '30'],
+    title: 'ПЕСНЯ 3',
+    songs: ['3', '4', '5', '6', '7'],
   },
   {
-    title: 'я на солнышке лежу...',
-    songs: ['10', '15', '20', '30'],
+    title: 'ПЕСНЯ 4',
+    songs: ['3', '4', '5', '6', '7'],
+  },
+  {
+    title: 'ПЕСНЯ 5',
+    songs: ['3', '4', '5', '6', '7'],
     current: true,
-    active: '20',
+    active: '4',
   },
 ])
 </script>
 <style lang="scss" scoped>
 .body {
-  margin-bottom: 18px;
+  margin-bottom: 4px;
   &:last-child {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
   }
 }
 </style>
