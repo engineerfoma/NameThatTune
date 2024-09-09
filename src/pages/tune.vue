@@ -6,7 +6,7 @@
       <Tabs />
       <v-btn
         target="_blank"
-        to="/tune-game"
+        to="/round-one"
         append-icon="mdi-check-circle"
         >Запустить игру</v-btn
       >

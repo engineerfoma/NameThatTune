@@ -9,8 +9,28 @@
 //   $color-pack: false
 // );
 
+@font-face {
+  font-family: 'BebasNeueBold';
+  src: url('../assets/fonts/BebasNeueBold.ttf') format('truetype'),
+    url('../assets/fonts/BebasNeueBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 .svg {
   width: 14px;
   margin-left: 6px;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.red {
+  background-color: #ea0029cc;
+}
+
+.current {
+  background-color: #FFFFFF80;
+}

@@ -11,5 +11,6 @@
 <style lang="scss">
 .main {
   height: 100dvh;
+  background-color: #00020F;
 }
 </style>

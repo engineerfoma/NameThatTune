@@ -15,7 +15,6 @@
             required
           ></v-text-field>
         </v-col>
-
         <v-col
           cols="12"
           md="4"
@@ -36,6 +35,7 @@
             ]"
           ></v-select>
         </v-col>
+        {{ qwerty }}12
         <v-tooltip
           v-if="!data.completed"
           text="Создаить команду"
@@ -48,7 +48,7 @@
               size="x-large"
               class="v-img flex-0-0"
               v-bind="props"
-              @click="data.completed = true"
+              @click="handleClick"
               icon="mdi-check-circle"
             ></v-icon>
           </template>
@@ -81,6 +81,15 @@ const props = defineProps({
   },
   index: Number,
 })
+
+const qwerty = ref('')
+const worker = new SharedWorker('worker.js')
+const port = worker.port
+const handleClick = () => {
+  console.log(12)
+
+  port.postMessage('залупа')
+}
 </script>
 <style lang="scss" scoped>
 .v-img {

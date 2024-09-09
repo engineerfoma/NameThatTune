@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="a"></div>
+  <input type="text" class="b" />
+  <button class="c">send</button>
+  <script>
+    const a = document.querySelector('.a')
+    const b = document.querySelector('.b')
+    const c = document.querySelector('.c')
+
+    const worker = new SharedWorker('./worker.js')
+    const port = worker.port
+    c.addEventListener('click', () => {
+      const m = b.value
+      
+      port.postMessage(m)
+      b.value = ''
+    })
+
+    port.onmessage = (e) => {
+      console.log(e);
+      
+      a.innerHTML += e.data + '<br>'
+    }
+  </script>
+</body>
+</html>

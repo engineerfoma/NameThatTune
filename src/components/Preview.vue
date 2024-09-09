@@ -152,7 +152,9 @@
   </v-container>
 </template> -->
 <template>
-      <v-main style="height: 100vh"></v-main>
+    <v-img
+      cover
+      src="@/assets/imgs/preview.png"
+    ></v-img>
 </template>
-<script>
-</script>
+<script></script>
