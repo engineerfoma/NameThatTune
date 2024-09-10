@@ -1,7 +1,7 @@
 <template>
   <v-fade-transition>
     <div
-      v-show="!expand"
+      v-if="!expand"
       class="d-flex h-100"
     >
       <div class="aside">
@@ -32,48 +32,57 @@
           />
         </svg>
       </div>
-      <Notes :data="notes" />
+      <Notes
+        v-if="notes.length"
+        :data="notes"
+      />
     </div>
   </v-fade-transition>
 </template>
 
 <script setup>
 import Notes from './Notes.vue'
+
 defineProps({
   expand: {
     type: Boolean,
-    default: true,
   },
 })
 
 const notes = ref([
   {
     title: '1',
+    active: false,
   },
   {
     title: '2',
+    active: false,
   },
   {
     title: '3',
+    active: false,
   },
   {
     title: '4',
+    active: false,
   },
   {
     title: '5',
+    active: false,
   },
   {
     title: '6',
+    active: false,
   },
   {
     title: '7',
-    active: '4',
+    active: true,
   },
 ])
 </script>
 <style lang="scss" scoped>
 .logo {
-  padding: 45px 0 0 57px;
+  margin: 45px 0 0 57px;
   margin-bottom: 316px;
 }
 
