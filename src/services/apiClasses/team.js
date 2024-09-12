@@ -10,17 +10,31 @@ export class Team {
     return axios.get(`${this.path}/team/`)
   }
 
-  // Получить все команды
+  // удалить все команды
   removeAll() {
     return axios.delete(`${this.path}/team/`)
   }
 
-  // Получить все команды
-  add(data) {
+  // удалить команду
+  remove(id) {
+    return axios.delete(`${this.path}/team/${id}/`)
+  }
+
+  // добавить команду
+  add({ id, name, color, score }) {
     return axios.post(`${this.path}/team/`, {
-      id: data.id,
-      name: data.name,
-      color: data.color,
+      id,
+      name,
+      color,
+      score
+    })
+  }
+
+  // изменить команду
+  edit({ id, name, color }) {
+    return axios.patch(`${this.path}/team/${id}/`, {
+      name,
+      color,
     })
   }
 }

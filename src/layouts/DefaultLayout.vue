@@ -69,5 +69,6 @@ watch(group, () => {
 <style lang="scss">
 .main {
   height: 100dvh;
+  overflow-y: scroll;
 }
 </style>

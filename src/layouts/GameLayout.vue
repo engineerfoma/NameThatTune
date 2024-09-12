@@ -1,7 +1,7 @@
 <template>
-  <v-card>
+  <v-card class="main">
     <v-layout>
-      <v-main class="main">
+      <v-main >
         <slot />
       </v-main>
     </v-layout>

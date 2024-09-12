@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <v-btn @click="removeAllTeams">
         Удалить все команды
         <img
@@ -15,11 +15,11 @@
         :disabled="forms.length >= 6"
         >Добавить команду</v-btn
       >
-      <!-- <v-btn
+      <v-btn
         append-icon="mdi-plus"
         @click="addTeam"
         >Добавить команду api</v-btn
-      > -->
+      > 
       <v-btn
         append-icon="mdi-check-circle"
         @click="getTeams"
@@ -38,7 +38,7 @@
         @removeForm="removeFormHandler"
       />
       {{ forms }}
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
