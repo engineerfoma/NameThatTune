@@ -30,9 +30,11 @@
         :data="form"
         @removeForm="removeFormHandler"
         @createTeam="handlerCreateTeam"
-        @updateRow="handleUpdateRow"
+        @updateStateForm="handleUpdateStateForm"
+        @cancelForm="handleCancelForm"
+        @updateForm="handleUpdateForm"
+        @saveScore="hanldeSaveScore"
       />
-      {{ forms }}
     </div>
   </div>
 </template>
@@ -44,37 +46,58 @@ import { onMounted } from 'vue'
 const forms = ref([])
 
 const disabledStateButton = computed(() => {
-  return !!forms.value.find((form) => !form.created)
+  return !!forms.value.find((form) => !form.disabled)
 })
 
 const addForm = () => {
   forms.value.push({
-    id: Math.floor(Math.random() * 1000),
     name: '',
     color: '',
     score: 0,
-    created: false,
+    disabled: false,
+    new: true,
   })
 }
 
 const removeAllTeams = async () => {
-  const data = await team.removeAll()
-  console.log(data)
+  const { status } = await team.removeAll()
+  if (status !== 200) {
+    return alert(`ошибка ${status}`)
+  }
+  forms.value = []
 }
 
 const handlerCreateTeam = async (props) => {
   if (!props.name || !props.color) {
     return alert('Заполните все поля!')
   }
+  props.new = false
+  props.disabled = true
 
-  props.created = true
-
-  return await team.add({
-    id: props.id,
+  const { data } = await team.add({
     name: props.name,
     color: props.color,
     score: 0,
   })
+
+  props.id = data.id
+
+  return props
+}
+
+const handleUpdateForm = async (props) => {
+  const { data } = await team.edit({
+    id: props.id,
+    name: props.name,
+    color: props.color,
+    score: props.score,
+  })
+  props.new = false
+  props.disabled = true
+  props = {
+    ...data,
+  }
+  return props
 }
 
 const getTeams = async () => {
@@ -88,21 +111,43 @@ const removeFormHandler = async (index) => {
   if (status !== 200) {
     return alert(`ошибка! ${statusText}`)
   }
-  console.log(forms.value)
 
   forms.value = forms.value.filter((form) => {
     return form.id !== index
   })
 }
 
-const handleUpdateRow = (data) => {
-  data.created = false
+const handleCancelForm = (data) => {
+  data.disabled = true
+}
+
+const handleUpdateStateForm = (data) => {
+  data.disabled = false
+}
+
+const hanldeSaveScore = async (props) => {
+  const resultScore = Number(props.data.score) + Number(props.diff)
+  const { data } = await team.edit({
+    id: props.data.id,
+    name: props.data.name,
+    color: props.data.color,
+    score: Number(resultScore),
+  })
+
+  const currentForm = forms.value.find((form) => form.id === props.data.id)
+  currentForm.score = data.score
+  return currentForm
 }
 
 onMounted(async () => {
   const teams = await getTeams()
 
-  if (teams.length) teams.forEach((team) => forms.value.push(team))
+  if (teams.length)
+    teams.forEach((team) => {
+      team.disabled = true
+      team.new = false
+      return forms.value.push(team)
+    })
 })
 </script>
 

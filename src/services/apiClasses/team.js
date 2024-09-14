@@ -31,10 +31,11 @@ export class Team {
   }
 
   // изменить команду
-  edit({ id, name, color }) {
+  edit({ id, name, color, score }) {
     return axios.patch(`${this.path}/team/${id}/`, {
       name,
       color,
+      score
     })
   }
 }
