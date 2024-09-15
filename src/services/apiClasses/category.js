@@ -10,6 +10,11 @@ export class Category {
     return axios.get(`${this.path}/category/`)
   }
 
+  // Получить категорию по id
+  getById(id) {
+    return axios.get(`${this.path}/category/${id}/`)
+  }
+
   // удалить все категории
   removeAll() {
     return axios.delete(`${this.path}/category/`)
@@ -23,6 +28,11 @@ export class Category {
   // добавить категорию
   add(data) {
     return axios.post(`${this.path}/category/`, data)
+  }
+
+  // добавить мелоидю в категорию
+  addMelodyInCategory({categoryId, melodyId}, data) {
+    return axios.post(`${this.path}/category/${categoryId}/${melodyId}/`, data)
   }
 
   // изменить категорию

@@ -1,83 +1,142 @@
 <template>
-  <div>
-    <!-- <div>
-      <v-btn @click="removeAllTeams">
-        Удалить все команды
-        <img
-          class="svg"
-          src="@/assets/icons/delete.svg"
-          alt="delete"
-        />
-      </v-btn>
-      <v-btn
-        append-icon="mdi-plus"
-        @click="addForm"
-        :disabled="forms.length >= 6"
-        >Добавить команду</v-btn
-      >
-      <v-btn
-        append-icon="mdi-plus"
-        @click="addTeam"
-        >Добавить команду api</v-btn
-      > 
-      <v-btn
-        append-icon="mdi-check-circle"
-        @click="getTeams"
-        >получить список команд</v-btn
-      >
-    </div>
-    <div
-      class="pt-6 d-flex ga-sm-6 flex-row w-100 flex-column"
-      v-if="forms.length"
-    >
-      <Form
-        v-for="(form, index) in forms"
-        :key="form.id"
-        :data="form"
-        :index="index"
-        @removeForm="removeFormHandler"
-      />
-      {{ forms }}
-    </div> -->
-  </div>
+  <Selected
+  class="w-100"
+    v-for="row in rows"
+    :key="row.id"
+    :title="'Категория ' + row.id"
+  >
+    <CategoryRow
+    class="w-100"
+      :row="row"
+      @updateStateRow="handleUpdateState"
+      @updateRow="handleUpdateRow"
+      @clearRow="handlerClearRow"
+      @cancelChangeRow="handleCancelChangeRow"
+    />
+    <SongList class="w-100" v-if="row.melodies.length" :songs="row.melodies" />
+  </Selected>
 </template>
 <script setup>
-import { team } from '@/services/api.service'
+import { onMounted } from 'vue'
+import { round } from '@/services/api.service'
+import SongList from '../SongList.vue'
+const rows = reactive([])
+//   {
+//     id: 1,
+//     name: '',
+//     active: '',
+//     disabled: false,
+//     songs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//     rightSongs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     name: '',
+//     disabled: false,
+//     songs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//     rightSongs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     name: '',
+//     disabled: false,
+//     songs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//     rightSongs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     name: '',
+//     disabled: false,
+//     songs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//     rightSongs: [
+//       { id: 1, path: null },
+//       { id: 2, path: null },
+//       { id: 3, path: null },
+//       { id: 4, path: null },
+//     ],
+//   },
+// ])
 
-const forms = ref([])
-
-const addForm = () => {
-  forms.value.push({
-    id: Math.floor(Math.random() * 100),
-    name: '',
-    color: '',
-    points: 0,
-    complete: false,
-  })
-}
-
-const removeAllTeams = async () => {
-  const data = await team.removeAll()
+const handleUpdateState = (data) => {
+  data.disabled = false
   console.log(data)
 }
 
-const addTeam = async () => {
-  const data = await team.add({
-    id: '1',
-    name: 'zaasflupa',
-    color: 'yellow',
-  })
+const handleUpdateRow = (data) => {
+  data.disabled = true
   console.log(data)
 }
 
-const getTeams = async () => {
-  const data = await team.get()
+const handlerClearRow = (data) => {
+  data.name = ''
+  data.disabled = false
+}
+
+const handleCancelChangeRow = (data) => {
+  // сделать гет запрос конкретной категории с данными
+  data.disabled = true
+
   console.log(data)
 }
 
-const removeFormHandler = (index) => {
-  console.log('index ', index)
+const getCategories = async () => {
+  try {
+    const { data } = await round.getById(1)
+    console.log(data)
+    data.forEach((el) => {
+      console.log(el)
 
-  forms.value.splice(index, 1)
+      rows.push(el)
+    })
+    console.log(rows)
+  } catch (e) {
+    alert(e)
+  }
 }
+
+onMounted(async () => {
+  await getCategories()
+})
 </script>
+
+<style lang="scss">
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+</style>

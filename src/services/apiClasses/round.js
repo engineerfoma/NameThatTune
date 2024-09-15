@@ -6,8 +6,8 @@ export class Round {
   }
 
   // Получить список категорий в раунде
-  get(name) {
-    return axios.get(`${this.path}/round/${name}`)
+  getById(id) {
+    return axios.get(`${this.path}/round/${id}/`)
   }
 
   // Получить список раундов

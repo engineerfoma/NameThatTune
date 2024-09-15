@@ -1,8 +1,8 @@
 import {Client } from '@stomp/stompjs'
 
 const url = 'ws://212.67.8.186:8080/socket'
-const topic = '/topic/greetings'
-const app = '/app/hello'
+const topic = '/topic/game'
+const app = '/app/game'
 export const client = new Client({
   brokerURL: url,
 })
