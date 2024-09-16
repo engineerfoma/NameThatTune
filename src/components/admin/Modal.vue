@@ -21,6 +21,7 @@
                 v-model="diff"
                 label="Введи количество очков"
                 type="number"
+                variant="outlined"
                 required
               ></v-text-field>
             </v-col>

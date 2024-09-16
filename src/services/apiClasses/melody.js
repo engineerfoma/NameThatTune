@@ -7,7 +7,7 @@ export class Melody {
 
   // Получить мелодии
   get() {
-    return axios.get(`${this.path}/melody/`)
+    return axios.gemelodyt(`${this.path}/melody/`)
   }
 
   // удалить все мелодии
@@ -35,10 +35,10 @@ export class Melody {
   edit(data) {
     return axios.patch(`${this.path}/melody/${data.id}/`, {
       name: data.name,
-      id: data.id,
       points: data.points,
       melodyPath: data.melodyPath,
       songPath: data.songPath,
+      status: data.status,
     })
   }
 }

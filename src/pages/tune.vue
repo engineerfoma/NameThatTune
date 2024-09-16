@@ -37,6 +37,7 @@ import Teams from '../components/admin/Teams'
   position: relative;
   gap: 20px;
   padding-bottom: 30px;
+  max-width: 100%;
 
   &__button {
     margin: 0 auto;

@@ -15,6 +15,7 @@
               :counter="10"
               label="Введите название команды"
               :disabled="data.disabled"
+              variant="outlined"
               hide-details
               required
             ></v-text-field>
@@ -30,6 +31,7 @@
               label="Выберите цвет команды"
               v-model="data.color"
               required
+              variant="outlined"
               :disabled="data.disabled"
               :items="[
                 'Красный',

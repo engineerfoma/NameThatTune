@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { round } from '@/services/api.service'
+import { round, melody } from '@/services/api.service'
 import SongList from '../SongList.vue'
 const rows = reactive([])
 //   {
@@ -119,13 +119,10 @@ const getCategories = async () => {
     const { data } = await round.getById(1)
     console.log(data)
     data.forEach((el) => {
-      console.log(el)
-
       rows.push(el)
     })
-    console.log(rows)
   } catch (e) {
-    alert(e)
+    alert(`ошибка: ${e}`)
   }
 }
 
@@ -135,8 +132,4 @@ onMounted(async () => {
 </script>
 
 <style lang="scss">
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
 </style>

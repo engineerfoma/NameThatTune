@@ -7,13 +7,14 @@
         <div class="w-100 d-flex flex-row align-center flex-sm-nowrap">
           <v-col
             cols="12"
-            md="5"
             class="w100"
           >
             <v-text-field
               v-model="row.name"
               :counter="10"
               label="Введите название категории"
+              variant="outlined"
+              density="compact"
               :disabled="row.disabled"
               hide-details
               required
