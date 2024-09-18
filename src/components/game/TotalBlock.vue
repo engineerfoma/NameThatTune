@@ -1,12 +1,17 @@
 <template>
-  <v-img
-    class="total align-center"
-    :src="path"
-    width="192"
-    height="116"
-  >
-    {{ data.value }}
-  </v-img>
+  <v-tooltip :text="data.name" location="bottom">
+    <template v-slot:activator="{ props }">
+      <v-img
+        class="total align-center"
+        :src="path"
+        v-bind="props"
+        width="192"
+        height="116"
+      >
+        {{ data.score }}
+      </v-img>
+    </template>
+  </v-tooltip>
 </template>
 
 <script setup>
@@ -27,6 +32,6 @@ const path = computed(() => {
   line-height: 64px;
   font-weight: 700;
   text-align: center;
-  color: white
+  color: white;
 }
 </style>

@@ -34,12 +34,12 @@
               variant="outlined"
               :disabled="data.disabled"
               :items="[
-                'Красный',
-                'Синий',
-                'Зеленый',
-                'Бирюзовый',
-                'Фиолетовый',
-                'Оранжевый',
+                'red',
+                'blue',
+                'green',
+                'ocean',
+                'purple',
+                'orange',
               ]"
             ></v-select>
           </v-col>

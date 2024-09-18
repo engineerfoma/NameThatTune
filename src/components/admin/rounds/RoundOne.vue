@@ -1,105 +1,45 @@
 <template>
   <Selected
-  class="w-100"
+    class="w-100"
     v-for="row in rows"
     :key="row.id"
     :title="'Категория ' + row.id"
   >
     <CategoryRow
-    class="w-100"
+      class="w-100"
       :row="row"
       @updateStateRow="handleUpdateState"
       @updateRow="handleUpdateRow"
       @clearRow="handlerClearRow"
       @cancelChangeRow="handleCancelChangeRow"
     />
-    <SongList class="w-100" v-if="row.melodies.length" :songs="row.melodies" />
+    <SongList
+      class="w-100"
+      v-if="row.melodies.length"
+      :songs="row.melodies"
+      @updateRound="handleUpdateActiveSong"
+    />
   </Selected>
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { round, melody } from '@/services/api.service'
+import { category } from '@/services/api.service'
+import { useAppStore } from '@/stores/app'
 import SongList from '../SongList.vue'
-const rows = reactive([])
-//   {
-//     id: 1,
-//     name: '',
-//     active: '',
-//     disabled: false,
-//     songs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//     rightSongs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     name: '',
-//     disabled: false,
-//     songs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//     rightSongs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     name: '',
-//     disabled: false,
-//     songs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//     rightSongs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//   },
-//   {
-//     id: 4,
-//     name: '',
-//     disabled: false,
-//     songs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//     rightSongs: [
-//       { id: 1, path: null },
-//       { id: 2, path: null },
-//       { id: 3, path: null },
-//       { id: 4, path: null },
-//     ],
-//   },
-// ])
+const rows = ref([])
+
+const store = useAppStore()
 
 const handleUpdateState = (data) => {
   data.disabled = false
-  console.log(data)
 }
 
-const handleUpdateRow = (data) => {
+const handleUpdateRow = async (data) => {
   data.disabled = true
-  console.log(data)
+  await category.edit(data.id, {
+    name: data.name,
+  })
+  await getCategories()
 }
 
 const handlerClearRow = (data) => {
@@ -107,23 +47,23 @@ const handlerClearRow = (data) => {
   data.disabled = false
 }
 
-const handleCancelChangeRow = (data) => {
-  // сделать гет запрос конкретной категории с данными
+const handleCancelChangeRow = async (data) => {
   data.disabled = true
-
+  await getCategories()
   console.log(data)
 }
 
 const getCategories = async () => {
   try {
-    const { data } = await round.getById(1)
-    console.log(data)
-    data.forEach((el) => {
-      rows.push(el)
-    })
+    const data = await store.getRound(1)
+    rows.value = data
   } catch (e) {
     alert(`ошибка: ${e}`)
   }
+}
+
+const handleUpdateActiveSong = async () => {
+  await getCategories()
 }
 
 onMounted(async () => {
@@ -131,5 +71,4 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

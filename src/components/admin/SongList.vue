@@ -38,8 +38,8 @@
             :key="song.id"
             :value="song.id"
             class="width"
-          >
-          </v-radio>
+            @change="onChangeSong"
+          />
         </v-radio-group>
         <div>
           <v-form
@@ -144,8 +144,9 @@
   </div>
 </template>
 <script setup>
-import { melody } from '../../services/api.service'
+import { melody, round } from '../../services/api.service'
 
+const emits = defineEmits(['updateRound'])
 const props = defineProps({
   songs: {
     type: Array,
@@ -157,37 +158,41 @@ const activeSong = reactive({
   value: '',
 })
 
-watch(
-  activeSong,
-  () => {
-    if (activeSong.value) {
-      const currentSong = props.songs.find(
-        (song) => song.id === activeSong.value
-      )
-      props.songs.forEach(async (song) => {
-        melody
-          .edit({
-            id: song.id,
-            status: 'null',
-          })
-          .then((res) => {
-            song.status = res.data.status
-          })
-      })
+const onChangeSong = async (event) => {
+  await melody.activateStatus(event.target.value)
+  emits('updateRound')
+}
+// watch(
+//   activeSong,
+//   () => {
+//     if (activeSong.value) {
+//       const currentSong = props.songs.find(
+//         (song) => song.id === activeSong.value
+//       )
+//       props.songs.forEach(async (song) => {
+//         melody
+//           .edit({
+//             id: song.id,
+//             status: 'null',
+//           })
+//           .then((res) => {
+//             song.status = res.data.status
+//           })
+//       })
 
-      melody
-        .edit({
-          id: currentSong.id,
-          status: 'active',
-        })
-        .then((res) => {
-          currentSong.status = res.data.status || null
-          activeSong.value = res.data.id
-        })
-    }
-  },
-  { deep: true }
-)
+//       melody
+//         .edit({
+//           id: currentSong.id,
+//           status: 'active',
+//         })
+//         .then((res) => {
+//           currentSong.status = res.data.status || null
+//           activeSong.value = res.data.id
+//         })
+//     }
+//   },
+//   { deep: true }
+// )
 
 const removeMelody = async (data) => {
   try {

@@ -41,4 +41,11 @@ export class Melody {
       status: data.status,
     })
   }
+
+  // активировать мелодию
+  activateStatus(id) {
+    return axios.patch(`${this.path}/melody/${id}/active/`, {
+      status: 'active',
+    })
+  }
 }

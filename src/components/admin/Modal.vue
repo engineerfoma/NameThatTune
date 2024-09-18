@@ -13,7 +13,7 @@
           >{{ data.score }}
         </v-btn>
       </template>
-      <v-card title="Очки команды ">
+      <v-card title="Добавить/отнять очки">
         <v-card-text>
           <v-row dense>
             <v-col cols="12">

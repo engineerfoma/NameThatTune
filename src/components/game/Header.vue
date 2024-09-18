@@ -6,8 +6,8 @@
       src="@/assets/icons/logo.svg"
     />
     <div class="header__container w-100 d-flex ">
-      <div v-for="team in teams">
-        <TotalBlock :data="team" />
+      <div v-for="team in teams" :key="team.id">
+        <TotalBlock v-if="team" :data="team" />
       </div>
     </div>
   </header>
@@ -15,38 +15,26 @@
 
 <script setup>
 import TotalBlock from './TotalBlock.vue'
+import { useAppStore } from '@/stores/app';
 
 defineProps({
   three: Boolean
 })
 
-const teams = ref([
-  {
-    color: 'red',
-    value: '123',
-  },
-  {
-    color: 'blue',
-    value: '2124',
-  },
-  {
-    color: 'green',
-    value: '2124',
-  },
-  {
-    color: 'ocean',
-    value: '122',
-  },
-  {
-    color: 'purple',
-    value: '4444',
-  },
-  {
-    color: 'orange',
-    value: '433',
-  },
+const teams = ref(null)
 
-])
+const store = useAppStore()
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'sharedTeams') {
+    store.teams =  JSON.parse(event.newValue) // Обновляем состояние
+    teams.value = store.teams
+  }
+})
+
+store.teams = JSON.parse(localStorage.getItem('sharedTeams') || '')
+teams.value = store.teams
+
 </script>
 
 <style lang="scss" scoped>

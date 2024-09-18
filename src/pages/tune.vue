@@ -11,6 +11,21 @@
         >
           <Teams />
         </Selected>
+        <Selected title="Активный раунд">
+          <v-radio-group
+            v-model="activeRound"
+            class="d-flex flex-column justify-space-between"
+          >
+            <v-radio
+              v-for="round in rounds"
+              :key="round.id"
+              :value="round.name"
+              class="width"
+            >
+              {{ round.id }}
+            </v-radio>
+          </v-radio-group>
+        </Selected>
         <Selected title="Раунды">
           <Tabs />
         </Selected>
@@ -18,7 +33,7 @@
       <v-btn
         class="tune__button"
         target="_blank"
-        to="/round-one"
+        :to="`/${activeRound}`"
         append-icon="mdi-check-circle"
         variant="outlined"
         >Запустить игру
@@ -30,6 +45,26 @@
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import Tabs from '../components/admin/Tabs'
 import Teams from '../components/admin/Teams'
+
+const rounds = ref([
+  {
+    id: 1,
+    name: 'round-one',
+  },
+  {
+    id: 2,
+    name: 'round-two',
+  },
+  {
+    id: 3,
+    name: 'round-three',
+  },
+  {
+    id: 4,
+    name: 'final-round',
+  },
+])
+const activeRound = ref('round-one')
 </script>
 
 <style lang="scss" scoped>

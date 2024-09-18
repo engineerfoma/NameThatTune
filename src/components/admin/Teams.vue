@@ -40,9 +40,10 @@
 </template>
 
 <script setup>
+import { useAppStore } from '@/stores/app'
 import { team } from '@/services/api.service'
 import { onMounted } from 'vue'
-
+const store = useAppStore()
 const forms = ref([])
 
 const disabledStateButton = computed(() => {
@@ -65,6 +66,7 @@ const removeAllTeams = async () => {
     return alert(`ошибка ${status}`)
   }
   forms.value = []
+  await getTeams()
 }
 
 const handlerCreateTeam = async (props) => {
@@ -81,7 +83,7 @@ const handlerCreateTeam = async (props) => {
   })
 
   props.id = data.id
-
+  await getTeams()
   return props
 }
 
@@ -97,12 +99,23 @@ const handleUpdateForm = async (props) => {
   props = {
     ...data,
   }
+  await getTeams()
   return props
 }
 
 const getTeams = async () => {
-  const { data } = await team.get()
-  return data
+  // const { data } = await team.get()
+  const teams = await store.getTeams()
+
+  if (teams.length) {
+    forms.value = []
+
+    teams.forEach((team) => {
+      team.disabled = true
+      team.new = false
+      return forms.value.push(team)
+    })
+  }
 }
 
 const removeFormHandler = async (index) => {
@@ -115,10 +128,12 @@ const removeFormHandler = async (index) => {
   forms.value = forms.value.filter((form) => {
     return form.id !== index
   })
+  await getTeams()
 }
 
-const handleCancelForm = (data) => {
+const handleCancelForm = async (data) => {
   data.disabled = true
+  await getTeams()
 }
 
 const handleUpdateStateForm = (data) => {
@@ -136,18 +151,12 @@ const hanldeSaveScore = async (props) => {
 
   const currentForm = forms.value.find((form) => form.id === props.data.id)
   currentForm.score = data.score
+  await getTeams()
   return currentForm
 }
 
 onMounted(async () => {
-  const teams = await getTeams()
-
-  if (teams.length)
-    teams.forEach((team) => {
-      team.disabled = true
-      team.new = false
-      return forms.value.push(team)
-    })
+  await getTeams()
 })
 </script>
 

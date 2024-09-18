@@ -7,15 +7,21 @@
         v-for="(row, index) in rows"
         :key="index"
       >
-        <Row :data="row" />
+      <pre v-if="store.data">
+        {{ store.data }}
+      </pre>
+        <!-- <Row :data="row" /> -->
       </div>
     </div>
   </v-fade-transition>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
 import Header from '@/components/game/Header.vue'
 import Row from './Row/firstAndTwoRound/Row.vue'
+import { useAppStore } from '@/stores/app'
+
 defineProps({
   expand: {
     type: Boolean,
@@ -43,6 +49,16 @@ const rows = ref([
     active: '20',
   },
 ])
+
+const store = useAppStore()
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'sharedRound1') {
+    store.round = event.newValue // Обновляем состояние
+  }
+})
+
+store.round = JSON.parse(localStorage.getItem('sharedRound1') || '')
 </script>
 <style lang="scss" scoped>
 .body {

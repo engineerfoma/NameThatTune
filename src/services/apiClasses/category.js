@@ -36,7 +36,7 @@ export class Category {
   }
 
   // изменить категорию
-  edit(data) {
+  edit(id, data) {
     return axios.patch(`${this.path}/category/${id}/`, data)
   }
 }
