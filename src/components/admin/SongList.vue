@@ -45,6 +45,7 @@
               <v-row
                 class="d-flex flex-row align-center flex-sm-nowrap justify-space-between"
               >
+                {{ song.completed }}
                 <div class="w-100 d-flex flex-row align-center flex-sm-nowrap">
                   <v-col cols="12">
                     <div class="d-flex align-center ga-4">
@@ -59,6 +60,11 @@
                         src="@/assets/icons/delete.svg"
                         alt="delete"
                       />
+                      <v-checkbox
+                        v-tooltip="'Завершить'"
+                        v-model="song.completed"
+                        @click="onCompleted(song)"
+                      ></v-checkbox>
                     </div>
                     <audio
                       v-if="song.melodyPath"
@@ -211,6 +217,20 @@ const removeActiveSong = async () => {
     })
     emits('updateRound')
   }
+}
+
+const onCompleted = async (data) => {
+  data.completed = !data.completed
+  try {
+    const response = await melody.edit({
+      id: data.id,
+      completed: data.completed,
+    })
+    data.completed = response.data.completed
+  } catch (e) {
+    alert(`ошибка: ${e}`)
+  }
+  emits('updateRound')
 }
 </script>
 

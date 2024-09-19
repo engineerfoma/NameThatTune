@@ -146,7 +146,6 @@ const handlerClearRow = (data) => {
 const handleCancelChangeRow = (data) => {
   // сделать гет запрос конкретной категории с данными
   data.disabled = true
-
 }
 </script>
 

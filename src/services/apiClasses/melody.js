@@ -39,6 +39,7 @@ export class Melody {
       melodyPath: data.melodyPath,
       songPath: data.songPath,
       status: data.status,
+      completed: data.completed
     })
   }
 

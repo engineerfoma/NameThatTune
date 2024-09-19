@@ -2,8 +2,6 @@
   <v-fade-transition>
     <div v-show="!expand">
       <Header />
-      {{ points[Number(activeCategory)] }}
-
       <div
         class="body"
         v-for="(row, index) in rows"

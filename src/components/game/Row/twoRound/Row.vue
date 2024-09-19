@@ -30,6 +30,7 @@
       class="d-flex align-center"
       v-for="melody in data.melodies"
     >
+    {{ melody.completed }}
       <v-img
         class="row__line"
         minWidth="100"
@@ -178,6 +179,9 @@ const props = defineProps({
 .visible {
   position: relative;
   opacity: 1;
+  &__complete {
+    opacity: 0.5;
+  }
 }
 
 .hidden {
