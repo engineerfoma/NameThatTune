@@ -21,12 +21,6 @@
         </div>
       </div>
     </div>
-    <pre>
-      {{ songs }}
-    </pre>
-    <pre>
-      {{ activeSong.value }}
-    </pre>
     <div class="grid w-100">
       <div class="display-grid">
         <v-radio-group
@@ -68,7 +62,10 @@
                     </div>
                     <audio
                       v-if="song.melodyPath"
+                      ref="audio"
                       :key="song.id"
+                      @play="onPlay"
+                      @pause="onPause"
                       controls
                       class="w-100"
                     >
@@ -152,7 +149,24 @@ const props = defineProps({
     type: Array,
     default: null,
   },
+  secondRound: Boolean,
+  rowId: Number,
 })
+
+const audio = ref([])
+
+const onPlay = () => {
+  if (props.secondRound) {
+    localStorage.setItem(`play`, true)
+    localStorage.setItem(`activeCategory`, props.rowId)
+  }
+}
+
+const onPause = () => {
+  if (props.secondRound) {
+    localStorage.setItem(`play`, false)
+  }
+}
 
 const activeSong = reactive({
   value: '',
@@ -162,37 +176,6 @@ const onChangeSong = async (event) => {
   await melody.activateStatus(event.target.value)
   emits('updateRound')
 }
-// watch(
-//   activeSong,
-//   () => {
-//     if (activeSong.value) {
-//       const currentSong = props.songs.find(
-//         (song) => song.id === activeSong.value
-//       )
-//       props.songs.forEach(async (song) => {
-//         melody
-//           .edit({
-//             id: song.id,
-//             status: 'null',
-//           })
-//           .then((res) => {
-//             song.status = res.data.status
-//           })
-//       })
-
-//       melody
-//         .edit({
-//           id: currentSong.id,
-//           status: 'active',
-//         })
-//         .then((res) => {
-//           currentSong.status = res.data.status || null
-//           activeSong.value = res.data.id
-//         })
-//     }
-//   },
-//   { deep: true }
-// )
 
 const removeMelody = async (data) => {
   try {
@@ -222,10 +205,11 @@ const removeActiveSong = async () => {
   if (activeSong.value) {
     const currentSong = props.songs.find((song) => song.id === activeSong.value)
     activeSong.value = ''
-    const response = await melody.edit({
+    await melody.edit({
       id: currentSong.id,
-      status: 'null',
+      status: 'default',
     })
+    emits('updateRound')
   }
 }
 </script>

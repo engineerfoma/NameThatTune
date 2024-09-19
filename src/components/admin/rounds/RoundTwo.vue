@@ -1,117 +1,81 @@
 <template>
+  <div class="d-flex">
+    <v-radio-group
+      v-model="activeCategory.two"
+      inline
+    >
+      <v-radio
+        v-for="category in rows"
+        :key="category.id"
+        :value="category.id"
+        :label="String(category.id)"
+        class="width"
+        @change="onChangeCategory"
+      >
+      </v-radio>
+      <template v-slot:label>
+        <div>Активная категория</div>
+      </template>
+    </v-radio-group>
+    <v-tooltip text="Отменить активную категорию">
+      <template v-slot:activator="{ props }">
+        <img
+          @click="removeActiveCategory"
+          v-bind="props"
+          class="img-header"
+          src="@/assets/icons/delete.svg"
+          alt="delete"
+        />
+      </template>
+    </v-tooltip>
+  </div>
   <Selected
+    class="w-100"
     v-for="row in rows"
     :key="row.id"
     :title="'Категория ' + row.id"
   >
     <CategoryRow
+      class="w-100"
       :row="row"
       @updateStateRow="handleUpdateState"
       @updateRow="handleUpdateRow"
       @clearRow="handlerClearRow"
       @cancelChangeRow="handleCancelChangeRow"
     />
-    <div class="grid mt-6">
-      <div>
-        <h2 class="text-center">Мелодии для игрового процесса</h2>
-        <Song
-          v-for="song in row.songs"
-          :song="song"
-          :key="song.id"
-        />
-      </div>
-      <div>
-        <h2 class="text-center">Ответы</h2>
-        <Song
-          v-for="song in row.rightSongs"
-          :song="song"
-          :key="song.id"
-        />
-      </div>
-    </div>
+    <SongList
+      class="w-100"
+      v-if="row.melodies.length"
+      :songs="row.melodies"
+      @updateRound="handleUpdateActiveSong"
+      secondRound
+      :rowId="activeCategory?.two"
+    />
   </Selected>
 </template>
 <script setup>
-import Song from '../SongList.vue'
-const rows = ref([
-  {
-    id: 1,
-    name: '',
-    disabled: false,
-    songs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-    rightSongs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-  },
-  {
-    id: 2,
-    name: '',
-    disabled: false,
-    songs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-    rightSongs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-  },
-  {
-    id: 3,
-    name: '',
-    disabled: false,
-    songs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-    rightSongs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-  },
-  {
-    id: 4,
-    name: '',
-    disabled: false,
-    songs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-    rightSongs: [
-      { id: 1, path: null },
-      { id: 2, path: null },
-      { id: 3, path: null },
-      { id: 4, path: null },
-    ],
-  },
-])
+import { onMounted } from 'vue'
+import { category } from '@/services/api.service'
+import { useAppStore } from '@/stores/app'
+import SongList from '../SongList.vue'
+import { storeToRefs } from 'pinia'
+
+const rows = ref([])
+
+const store = useAppStore()
+
+const { activeCategory } = storeToRefs(store)
 
 const handleUpdateState = (data) => {
   data.disabled = false
-  console.log(data)
 }
 
-const handleUpdateRow = (data) => {
+const handleUpdateRow = async (data) => {
   data.disabled = true
-  console.log(data)
+  await category.edit(data.id, {
+    name: data.name,
+  })
+  await getCategories()
 }
 
 const handlerClearRow = (data) => {
@@ -119,17 +83,61 @@ const handlerClearRow = (data) => {
   data.disabled = false
 }
 
-const handleCancelChangeRow = (data) => {
-  // сделать гет запрос конкретной категории с данными
+const handleCancelChangeRow = async (data) => {
   data.disabled = true
-
-  console.log(data)
+  await getCategories()
 }
+
+const getCategories = async () => {
+  try {
+    const data = await store.getRoundTwo()
+    rows.value = data
+  } catch (e) {
+    alert(`ошибка: ${e}`)
+  }
+}
+
+const handleUpdateActiveSong = async () => {
+  await getCategories()
+}
+
+const onChangeCategory = async (event) => {
+  await category.activateStatus(event.target.value, 2)
+  store.changeActiveCategory({
+    id: 'two',
+    value: event.target.value,
+  })
+  await getCategories()
+}
+
+const removeActiveCategory = async () => {
+  if (activeCategory.value) {
+    const currentCategory = rows.value.find(
+      (category) => category.id === activeCategory.value.two
+    )
+
+    store.clearActiveCategory('two')
+    await category.edit(currentCategory.id, {
+      status: 'default',
+    })
+    await getCategories()
+  }
+}
+
+onMounted(async () => {
+  await getCategories()
+})
 </script>
 
-<style lang="scss">
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+<style lang="scss" scoped>
+.img-header {
+  transition: opacity 0.3s ease;
+  width: 25px;
+  margin: 0 auto;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 }
 </style>

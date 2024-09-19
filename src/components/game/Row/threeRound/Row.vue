@@ -3,7 +3,7 @@
     <div class="row__wrapper">
       <svg
         class="row__img d-flex align-center justify-center"
-        :class="{ row__border_active: data.current }"
+        :class="{ row__border_active: data.status === 'active' }"
         width="425"
         height="120"
         viewBox="0 0 425 120"
@@ -20,16 +20,15 @@
         />
       </svg>
       <span
-        :class="{ row__title_active: data.current }"
-        class="row__title"
-        :title="data.title.toUpperCase()"
-        >{{ data.title.toUpperCase() }}</span
+        :class="{ row__title_active: data.status === 'active' }"
+        class="row__title text-center"
+        :title="data.name.toUpperCase()"
+        >{{ data.name.toUpperCase() }}</span
       >
     </div>
-
     <div
       class="d-flex align-center"
-      v-for="note in data.songs"
+      v-for="melody in data.melodies"
     >
       <v-img
         class="row__line"
@@ -40,42 +39,42 @@
       >
       </v-img>
       <v-img
-        v-if="note === data.active"
         class="row__note"
+        :class="melody.status === 'active' ? 'visible' : 'hidden'"
         width="137"
         cover
         src="@/assets/imgs/note-active.png"
       >
         <div
           class="row__note_wrapper"
-          :class="{ red: note === data.active }"
+          :class="{ red: melody.status === 'active' }"
         >
-          {{ note }}
+          {{ melody.points }}
         </div>
       </v-img>
       <v-img
-        v-else-if="data.current"
         class="row__note"
+        :class="data.status === 'active' && melody.status !== 'active' ? 'visible' : 'hidden'"
         width="137"
         cover
         src="@/assets/imgs/note-current.png"
       >
         <div
           class="row__note_wrapper"
-          :class="{ current: data.current }"
+          :class="{ current: data.status === 'active' }"
         >
-          {{ note }}
+        {{ melody.points }}
         </div>
       </v-img>
       <v-img
-        v-else
         class="row__note"
+        :class="data.status === 'default' && melody.status === 'default' ? 'visible' : 'hidden'"
         width="137"
         cover
         src="@/assets/imgs/note.png"
       >
         <div class="row__note_wrapper">
-          {{ note }}
+          {{ melody.points }}
         </div>
       </v-img>
     </div>
@@ -89,6 +88,7 @@ defineProps({
     default: null,
   },
 })
+
 </script>
 
 <style lang="scss" scoped>
@@ -110,11 +110,12 @@ defineProps({
   }
   &__title {
     position: absolute;
-    font-size: 43px;
+    font-size: 32px;
     font-weight: 500;
     color: white;
     padding-top: 43px;
     margin-right: 35px;
+    padding-right: 20px;
     width: fit-content;
     overflow: hidden;
     display: -webkit-box;
@@ -150,7 +151,7 @@ defineProps({
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 36px;
+      font-size: 30px;
       font-weight: 700;
     }
   }
@@ -162,5 +163,15 @@ defineProps({
 
 .red {
   background-color: #ea0029cc;
+}
+
+.visible {
+  position: relative;
+  opacity: 1;
+}
+
+.hidden {
+  position: absolute;
+  opacity: 0;
 }
 </style>

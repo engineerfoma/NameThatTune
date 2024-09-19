@@ -39,4 +39,11 @@ export class Category {
   edit(id, data) {
     return axios.patch(`${this.path}/category/${id}/`, data)
   }
+
+    // активировать категорию
+    activateStatus(categoryId, roundId) {
+      return axios.patch(`${this.path}/category/${categoryId}/active/${roundId}/`, {
+        status: 'active',
+      })
+    }
 }

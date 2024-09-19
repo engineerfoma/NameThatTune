@@ -132,12 +132,10 @@ const rows = ref([
 
 const handleUpdateState = (data) => {
   data.disabled = false
-  console.log(data)
 }
 
 const handleUpdateRow = (data) => {
   data.disabled = true
-  console.log(data)
 }
 
 const handlerClearRow = (data) => {
@@ -149,7 +147,6 @@ const handleCancelChangeRow = (data) => {
   // сделать гет запрос конкретной категории с данными
   data.disabled = true
 
-  console.log(data)
 }
 </script>
 

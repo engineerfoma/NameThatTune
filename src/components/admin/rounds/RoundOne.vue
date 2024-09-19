@@ -1,4 +1,34 @@
 <template>
+  <div class="d-flex">
+    <v-radio-group
+      v-model="activeCategory.one"
+      inline
+    >
+      <v-radio
+        v-for="category in rows"
+        :key="category.id"
+        :value="category.id"
+        :label="String(category.id)"
+        class="width"
+        @change="onChangeCategory"
+      >
+      </v-radio>
+      <template v-slot:label>
+        <div>Активная категория</div>
+      </template>
+    </v-radio-group>
+    <v-tooltip text="Отменить активную категорию">
+      <template v-slot:activator="{ props }">
+        <img
+          @click="removeActiveCategory"
+          v-bind="props"
+          class="img-header"
+          src="@/assets/icons/delete.svg"
+          alt="delete"
+        />
+      </template>
+    </v-tooltip>
+  </div>
   <Selected
     class="w-100"
     v-for="row in rows"
@@ -26,9 +56,13 @@ import { onMounted } from 'vue'
 import { category } from '@/services/api.service'
 import { useAppStore } from '@/stores/app'
 import SongList from '../SongList.vue'
+import { storeToRefs } from 'pinia'
+
 const rows = ref([])
 
 const store = useAppStore()
+
+const { activeCategory } = storeToRefs(store)
 
 const handleUpdateState = (data) => {
   data.disabled = false
@@ -50,12 +84,11 @@ const handlerClearRow = (data) => {
 const handleCancelChangeRow = async (data) => {
   data.disabled = true
   await getCategories()
-  console.log(data)
 }
 
 const getCategories = async () => {
   try {
-    const data = await store.getRound(1)
+    const data = await store.getRoundOne()
     rows.value = data
   } catch (e) {
     alert(`ошибка: ${e}`)
@@ -66,9 +99,42 @@ const handleUpdateActiveSong = async () => {
   await getCategories()
 }
 
+const onChangeCategory = async (event) => {
+  await category.activateStatus(event.target.value, 1)
+  store.changeActiveCategory({
+    id: 'one',
+    value: event.target.value,
+  })
+  await getCategories()
+}
+
+const removeActiveCategory = async () => {
+  if (activeCategory.value.one) {
+    const currentCategory = rows.value.find(
+      (category) => category.id === activeCategory.value.one
+    )
+    store.clearActiveCategory('one')
+    await category.edit(currentCategory.id, {
+      status: 'default',
+    })
+    await getCategories()
+  }
+}
+
 onMounted(async () => {
   await getCategories()
 })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.img-header {
+  transition: opacity 0.3s ease;
+  width: 25px;
+  margin: 0 auto;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+}
+</style>

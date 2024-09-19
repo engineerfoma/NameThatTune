@@ -14,15 +14,16 @@
         <Selected title="Активный раунд">
           <v-radio-group
             v-model="activeRound"
+            inline
             class="d-flex flex-column justify-space-between"
           >
             <v-radio
               v-for="round in rounds"
               :key="round.id"
               :value="round.name"
+              :label="String(round.id)"
               class="width"
             >
-              {{ round.id }}
             </v-radio>
           </v-radio-group>
         </Selected>

@@ -7,19 +7,15 @@
         v-for="(row, index) in rows"
         :key="index"
       >
-      <pre v-if="store.data">
-        {{ store.data }}
-      </pre>
-        <!-- <Row :data="row" /> -->
+        <Row :data="row" />
       </div>
     </div>
   </v-fade-transition>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
 import Header from '@/components/game/Header.vue'
-import Row from './Row/firstAndTwoRound/Row.vue'
+import Row from './Row/threeRound/Row.vue'
 import { useAppStore } from '@/stores/app'
 
 defineProps({
@@ -29,36 +25,19 @@ defineProps({
   },
 })
 
-const rows = ref([
-  {
-    title: 'ХИТЫ 90-х',
-    songs: ['10', '15', '20', '30'],
-  },
-  {
-    title: 'ИМЕНА',
-    songs: ['10', '15', '20', '30'],
-  },
-  {
-    title: 'филипп лучезарный',
-    songs: ['10', '15', '20', '30'],
-  },
-  {
-    title: 'я на солнышке лежу...',
-    songs: ['10', '15', '20', '30'],
-    current: true,
-    active: '20',
-  },
-])
+const rows = ref({})
 
 const store = useAppStore()
 
 window.addEventListener('storage', (event) => {
   if (event.key === 'sharedRound1') {
-    store.round = event.newValue // Обновляем состояние
+    store.roundOne = JSON.parse(event.newValue) // Обновляем состояние
+    rows.value = store.roundOne
   }
 })
 
-store.round = JSON.parse(localStorage.getItem('sharedRound1') || '')
+store.roundOne = JSON.parse(localStorage.getItem('sharedRound1') || '')
+rows.value = store.roundOne
 </script>
 <style lang="scss" scoped>
 .body {
