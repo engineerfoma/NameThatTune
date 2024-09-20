@@ -45,7 +45,6 @@
               <v-row
                 class="d-flex flex-row align-center flex-sm-nowrap justify-space-between"
               >
-                {{ song.completed }}
                 <div class="w-100 d-flex flex-row align-center flex-sm-nowrap">
                   <v-col cols="12">
                     <div class="d-flex align-center ga-4">
@@ -232,6 +231,7 @@ const onCompleted = async (data) => {
   }
   emits('updateRound')
 }
+
 </script>
 
 <style lang="scss" scoped>

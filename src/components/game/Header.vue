@@ -44,7 +44,6 @@ teams.value = store.teams
   gap: 140px;
   &__container {
     gap: 47px;
-    overflow: scroll;
   }
 
   &__three {

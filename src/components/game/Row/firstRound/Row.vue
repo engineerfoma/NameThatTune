@@ -4,36 +4,35 @@
       <svg
         class="row__img d-flex align-center justify-center"
         :class="{ row__border_active: data.status === 'active' }"
-        height="134"
-        viewBox="0 0 556 134"
+        width="425"
+        height="120"
+        viewBox="0 0 425 120"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M-1 5H555L534.495 129H-1"
+          d="M0 5H420L402.311 115H0"
           stroke="white"
           stroke-width="10"
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-dasharray="1 30"
-          transform="scale(1)"
+          stroke-dasharray="1 37"
         />
       </svg>
       <span
         :class="{ row__title_active: data.status === 'active' }"
-        class="row__title"
+        class="row__title text-center"
         :title="data.name.toUpperCase()"
         >{{ data.name.toUpperCase() }}</span
       >
     </div>
-
     <div
       class="d-flex align-center"
-      v-for="melody in melodies"
+      v-for="melody in data.melodies"
     >
       <v-img
         class="row__line"
-        minWidth="119"
+        minWidth="100"
         height="10"
         cover
         src="@/assets/icons/line.png"
@@ -42,7 +41,7 @@
       <v-img
         class="row__note"
         :class="melody.status === 'active' ? 'visible' : 'hidden'"
-        width="170"
+        width="137"
         cover
         src="@/assets/imgs/note-active.png"
       >
@@ -55,12 +54,18 @@
       </v-img>
       <v-img
         class="row__note"
-        :class="data.status === 'active' && melody.status !== 'active' ? 'visible' : 'hidden'"
-        width="170"
+        :class="[
+          data.status === 'active' && melody.status !== 'active'
+            ? 'visible'
+            : 'hidden',
+          melody.completed ? 'visible__completed' : '',
+        ]"
+        width="137"
         cover
         src="@/assets/imgs/note-current.png"
       >
         <div
+          v-show="!melody.completed"
           class="row__note_wrapper"
           :class="{ current: data.status === 'active' }"
         >
@@ -69,12 +74,20 @@
       </v-img>
       <v-img
         class="row__note"
-        :class="data.status === 'default' && melody.status === 'default' ? 'visible' : 'hidden'"
-        width="170"
+        :class="[
+          data.status === 'default' && melody.status === 'default'
+            ? 'visible'
+            : 'hidden',
+          melody.completed ? 'visible__completed' : '',
+        ]"
+        width="137"
         cover
         src="@/assets/imgs/note.png"
       >
-        <div class="row__note_wrapper">
+        <div
+          v-show="!melody.completed"
+          class="row__note_wrapper"
+        >
           {{ melody.points }}
         </div>
       </v-img>
@@ -83,15 +96,12 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   data: {
     type: Object,
     default: null,
   },
 })
-
-const melodies = computed(() => props.data.melodies)
-const atciveRound = computed(() => props.data.melodies)
 </script>
 
 <style lang="scss" scoped>
@@ -113,11 +123,12 @@ const atciveRound = computed(() => props.data.melodies)
   }
   &__title {
     position: absolute;
-    font-size: 37px;
+    font-size: 32px;
     font-weight: 500;
     color: white;
-    padding-top: 60px;
+    padding-top: 43px;
     margin-right: 35px;
+    padding-right: 20px;
     width: fit-content;
     overflow: hidden;
     display: -webkit-box;
@@ -131,13 +142,13 @@ const atciveRound = computed(() => props.data.melodies)
   }
 
   &__img {
-    margin-top: 56px;
+    margin-top: 40px;
     margin-right: 35px;
   }
 
   &__line {
-    margin-top: 56px;
-    margin-right: 28px;
+    margin-top: 40px;
+    margin-right: 24px;
   }
 
   &__note {
@@ -148,12 +159,12 @@ const atciveRound = computed(() => props.data.melodies)
       top: 50%;
       border-radius: 50%;
       background-color: #ffffff33;
-      width: 65px;
-      height: 65px;
+      width: 52px;
+      height: 52px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 36px;
+      font-size: 30px;
       font-weight: 700;
     }
   }
@@ -170,6 +181,9 @@ const atciveRound = computed(() => props.data.melodies)
 .visible {
   position: relative;
   opacity: 1;
+  &__completed {
+    opacity: 0.5;
+  }
 }
 
 .hidden {

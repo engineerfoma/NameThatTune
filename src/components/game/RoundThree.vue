@@ -7,7 +7,7 @@
         v-for="(row, index) in rows"
         :key="index"
       >
-        <!-- <Row :data="row" /> -->
+        <Row :data="row" />
       </div>
     </div>
   </v-fade-transition>
@@ -26,30 +26,7 @@ defineProps({
 
 const store = useAppStore()
 const rows = ref({})
-// const rows = ref([
-//   {
-//     title: 'ПЕСНЯ 1',
-//     songs: ['3', '4', '5', '6', '7'],
-//   },
-//   {
-//     title: 'ПЕСНЯ 2',
-//     songs: ['3', '4', '5', '6', '7'],
-//   },
-//   {
-//     title: 'ПЕСНЯ 3',
-//     songs: ['3', '4', '5', '6', '7'],
-//   },
-//   {
-//     title: 'ПЕСНЯ 4',
-//     songs: ['3', '4', '5', '6', '7'],
-//   },
-//   {
-//     title: 'ПЕСНЯ 5',
-//     songs: ['3', '4', '5', '6', '7'],
-//     current: true,
-//     active: '4',
-//   },
-// ])
+
 window.addEventListener('storage', (event) => {
   if (event.key === 'sharedRound3') {
     store.roundThree = JSON.parse(event.newValue) // Обновляем состояние

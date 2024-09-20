@@ -46,7 +46,7 @@ let interval = null
 
 watch(timer, () => {
   if (timer.value) {
-    points.value[activeCategory] += 5
+    // points.value[activeCategory] += 5
     interval = setInterval(() => {
       points.value[Number(activeCategory.value)] += 1
     }, 200)

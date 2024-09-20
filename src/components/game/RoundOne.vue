@@ -15,7 +15,7 @@
 
 <script setup>
 import Header from '@/components/game/Header.vue'
-import Row from './Row/threeRound/Row.vue'
+import Row from './Row/firstRound/Row.vue'
 import { useAppStore } from '@/stores/app'
 
 defineProps({

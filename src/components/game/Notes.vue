@@ -8,25 +8,26 @@
         :class="{ 'note-p': index === 0 }"
       >
         <v-img
-          v-if="note.active"
+          v-if="note.status === 'active'"
           class="note__single"
           width="239"
           cover
           src="@/assets/imgs/note-active.png"
         >
           <div class="note__single_title red">
-            {{ note.title }}
+            {{ note.points }}
           </div>
         </v-img>
         <v-img
           v-else
           class="note__single"
+          :class="{ note__single_completed: note.completed }"
           width="239"
           cover
           src="@/assets/imgs/note.png"
         >
           <div class="note__single_title">
-            {{ note.title }}
+            {{ note.points }}
           </div>
         </v-img>
         <v-img
@@ -44,25 +45,26 @@
         :key="index"
       >
         <v-img
-          v-if="note.active"
+          v-if="note.status === 'active'"
           class="note__single"
           width="239"
           cover
           src="@/assets/imgs/note-active.png"
         >
           <div class="note__single_title red">
-            {{ note.title }}
+            {{ note.points }}
           </div>
         </v-img>
         <v-img
           v-else
           class="note__single"
+          :class="{ note__single_completed: note.completed }"
           width="239"
           cover
           src="@/assets/imgs/note.png"
         >
           <div class="note__single_title">
-            {{ note.title }}
+            {{ note.points }}
           </div>
         </v-img>
       </div>
@@ -79,14 +81,13 @@ const props = defineProps({
     default: null,
   },
 })
+
 const arrayTop = computed(() =>
-  props.data.filter(
-    (el) => el.title === '1' || el.title === '3' || el.title === '5'
-  )
+  props.data.filter((el) => el.id === 66 || el.id === 68 || el.id === 70)
 )
 const arrayBottom = computed(() =>
   props.data.filter(
-    (el) => el.title === '2' || el.title === '4' || el.title === '6' || el.title === '7'
+    (el) => el.id === 67 || el.id === 69 || el.id === 71 || el.id === 72
   )
 )
 </script>
@@ -118,6 +119,10 @@ const arrayBottom = computed(() =>
   width: fit-content;
   &__single {
     position: relative;
+
+    &_completed {
+      opacity: 0.3;
+    }
 
     &_diagonal {
       margin-top: 23px;

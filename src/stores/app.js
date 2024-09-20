@@ -40,10 +40,10 @@ export const useAppStore = defineStore('app', {
 
     async getRoundFour() {
       const { data } = await round.getById(4)
-
-      localStorage.setItem(`sharedRound4`, JSON.stringify(data)) // Сохраняем в Local Storage
+      
+      localStorage.setItem(`sharedRound4`, JSON.stringify(data[0].melodies)) // Сохраняем в Local Storage
       this.roundFour = data
-      return this.roundsFour
+      return this.roundFour
     },
     async getTeams() {
       const { data } = await team.get()

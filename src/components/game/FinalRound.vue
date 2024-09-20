@@ -4,6 +4,13 @@
       v-if="!expand"
       class="d-flex h-100"
     >
+      <div
+        class="timer"
+        :class="{ timer__active: timerStatus }"
+      >
+        00:{{ timer }}
+      </div>
+
       <div class="aside">
         <img
           class="logo"
@@ -33,8 +40,8 @@
         </svg>
       </div>
       <Notes
-        v-if="notes.length"
-        :data="notes"
+        v-if="rows.length"
+        :data="rows"
       />
     </div>
   </v-fade-transition>
@@ -42,43 +49,47 @@
 
 <script setup>
 import Notes from './Notes.vue'
+import { useAppStore } from '@/stores/app'
 
 defineProps({
   expand: {
     type: Boolean,
   },
 })
+const rows = ref(null)
+const timer = ref(30)
+const timerStatus = ref(false)
 
-const notes = ref([
-  {
-    title: '1',
-    active: false,
-  },
-  {
-    title: '2',
-    active: false,
-  },
-  {
-    title: '3',
-    active: false,
-  },
-  {
-    title: '4',
-    active: false,
-  },
-  {
-    title: '5',
-    active: false,
-  },
-  {
-    title: '6',
-    active: false,
-  },
-  {
-    title: '7',
-    active: true,
-  },
-])
+let interval = null
+
+watch(timerStatus, () => {
+  if (timerStatus.value) {
+    interval = setInterval(() => {
+      timer.value -= 1
+    }, 1000)
+  } else {
+    clearInterval(interval) // Останавливаем счётчик
+    interval = null
+  }
+})
+
+onUnmounted(() => {
+  clearInterval(interval)
+})
+
+const store = useAppStore()
+window.addEventListener('storage', (event) => {
+  if (event.key === 'sharedRound4') {
+    store.roundFour = JSON.parse(event.newValue) // Обновляем состояние
+    rows.value = store.roundFour
+  }
+
+  if (event.key === 'play') {
+    timerStatus.value = JSON.parse(event.newValue) // Обновляем состояние
+  }
+})
+store.roundFour = JSON.parse(localStorage.getItem('sharedRound4') || '')
+rows.value = store.roundFour
 </script>
 <style lang="scss" scoped>
 .logo {
@@ -89,5 +100,19 @@ const notes = ref([
 .aside {
   display: flex;
   flex-direction: column;
+}
+
+.timer {
+  position: absolute;
+  left: 6%;
+  top: 60%;
+  font-size: 100px;
+  font-weight: 700;
+  transition: color 0.3s ease;
+  color: rgba(255, 255, 255, 1);
+
+  &__active {
+    color: red;
+  }
 }
 </style>

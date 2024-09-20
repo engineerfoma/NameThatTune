@@ -30,7 +30,6 @@
       class="d-flex align-center"
       v-for="melody in data.melodies"
     >
-    {{ melody.completed }}
       <v-img
         class="row__line"
         minWidth="100"
@@ -55,16 +54,18 @@
       </v-img>
       <v-img
         class="row__note"
-        :class="
+        :class="[
           data.status === 'active' && melody.status !== 'active'
             ? 'visible'
-            : 'hidden'
-        "
+            : 'hidden',
+          melody.completed ? 'visible__completed' : '',
+        ]"
         width="137"
         cover
         src="@/assets/imgs/note-current.png"
       >
         <div
+          v-show="!melody.completed"
           class="row__note_wrapper"
           :class="{ current: data.status === 'active' }"
         >
@@ -73,16 +74,20 @@
       </v-img>
       <v-img
         class="row__note"
-        :class="
+        :class="[
           data.status === 'default' && melody.status === 'default'
             ? 'visible'
-            : 'hidden'
-        "
+            : 'hidden',
+          melody.completed ? 'visible__completed' : '',
+        ]"
         width="137"
         cover
         src="@/assets/imgs/note.png"
       >
-        <div class="row__note_wrapper">
+        <div
+          v-show="!melody.completed"
+          class="row__note_wrapper"
+        >
           {{ points }}
         </div>
       </v-img>
@@ -91,15 +96,13 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
   data: {
     type: Object,
     default: null,
   },
-  points: Number
+  points: Number,
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -179,7 +182,7 @@ const props = defineProps({
 .visible {
   position: relative;
   opacity: 1;
-  &__complete {
+  &__completed {
     opacity: 0.5;
   }
 }
