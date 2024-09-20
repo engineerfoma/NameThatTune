@@ -51,8 +51,8 @@ const group = ref(null)
 const items = [
   {
     title: 'Угадай мелодию',
-    value: 'tune',
-    link: 'tune',
+    value: 'guess-melody',
+    link: 'guess-melody',
   },
   {
     title: 'Квиз',

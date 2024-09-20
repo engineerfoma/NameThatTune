@@ -7,16 +7,20 @@
         v-for="(row, index) in rows"
         :key="index"
       >
-        <Row :data="row" />
+        <Row
+          :data="row"
+          :completedRow="completedRow"
+        />
       </div>
     </div>
   </v-fade-transition>
 </template>
 
 <script setup>
-import Header from '@/components/game/Header.vue'
-import Row from './Row/threeRound/Row.vue'
+import Header from '@/components/Game/Header.vue'
+import Row from '../Row/ThreeRound/ThreeRoundRow.vue'
 import { useAppStore } from '@/stores/app'
+import { computed } from 'vue'
 defineProps({
   expand: {
     type: Boolean,

@@ -21,10 +21,10 @@
   </v-card>
 </template>
 <script setup>
-import RoundOne from './rounds/RoundOne.vue'
-import RoundTwo from './rounds/RoundTwo.vue'
-import RoundThree from './rounds/RoundThree.vue'
-import RoundFour from './rounds/RoundFour.vue'
+import RoundOne from './Rounds/AdminRoundOne.vue'
+import RoundTwo from './Rounds/AdminRoundTwo.vue'
+import RoundThree from './Rounds/AdminRoundThree.vue'
+import RoundFour from './Rounds/AdminRoundFour.vue'
 const tab = ref(null)
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia';

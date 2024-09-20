@@ -31,21 +31,32 @@
           <Tabs />
         </Selected>
       </div>
-      <v-btn
-        class="tune__button"
-        target="_blank"
-        :to="`/${activeRound}`"
-        append-icon="mdi-check-circle"
-        variant="outlined"
-        >Запустить игру
-      </v-btn>
+      <div class="d-flex ga-5">
+        <v-btn
+          class="tune__button"
+          target="_blank"
+          :to="`${path}/${activeRound}`"
+          append-icon="mdi-check-circle"
+          variant="outlined"
+        >
+          Запустить игру
+        </v-btn>
+        <v-btn
+          class="tune__button"
+          variant="outlined"
+          @click="changeRound"
+        >
+          Смена раунда
+        </v-btn>
+      </div>
     </v-container>
   </DefaultLayout>
 </template>
 <script setup>
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import Tabs from '../components/admin/Tabs'
-import Teams from '../components/admin/Teams'
+import Tabs from '@/components/Admin/Tabs'
+import Teams from '@/components/Admin/Teams'
+import { useRouter } from 'vue-router'
 
 const rounds = ref([
   {
@@ -65,7 +76,16 @@ const rounds = ref([
     name: 'final-round',
   },
 ])
+
+const router = useRouter()
+
+const path = computed(() => router.currentRoute.value.fullPath)
+
 const activeRound = ref('round-one')
+
+const changeRound = () => {
+  localStorage.setItem(`changeRound`, JSON.stringify(activeRound.value))
+}
 </script>
 
 <style lang="scss" scoped>

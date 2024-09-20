@@ -1,6 +1,7 @@
 <template>
   <div class="row d-flex align-center">
     <div class="row__wrapper">
+      <!-- Todo: доработать функционал с блокировкой всей строки -->
       <svg
         class="row__img d-flex align-center justify-center"
         :class="{ row__border_active: data.status === 'active' }"
@@ -85,8 +86,8 @@
         src="@/assets/imgs/note.png"
       >
         <div
-        v-show="!melody.completed"
-        class="row__note_wrapper"
+          v-show="!melody.completed"
+          class="row__note_wrapper"
         >
           {{ melody.points }}
         </div>
@@ -104,7 +105,6 @@ const props = defineProps({
 })
 
 const melodies = computed(() => props.data.melodies)
-const atciveRound = computed(() => props.data.melodies)
 </script>
 
 <style lang="scss" scoped>
@@ -139,7 +139,8 @@ const atciveRound = computed(() => props.data.melodies)
     line-height: 1.3em;
 
     &_active {
-      color: black;
+      // opacity: .4;
+      color: rgba(255, 255, 255, 0.5);
     }
   }
 

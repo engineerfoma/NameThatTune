@@ -6,8 +6,8 @@
 </template>
 <script setup>
 import GameLayout from '@/layouts/GameLayout.vue'
-import Preview from '@/components/game/Preview.vue'
-import FinalRound from '@/components/game/FinalRound.vue'
+import Preview from '@/components/Game/Preview.vue'
+import FinalRound from '@/components/Game/Melody/Rounds/MelodyFinalRound.vue'
 
 const expand = ref(true)
 

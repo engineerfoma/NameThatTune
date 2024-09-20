@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import TotalBlock from './TotalBlock.vue'
+import TotalBlock from './Melody/TotalBlock.vue'
 import { useAppStore } from '@/stores/app';
 
 defineProps({

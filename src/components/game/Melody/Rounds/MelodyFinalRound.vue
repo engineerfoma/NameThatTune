@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import Notes from './Notes.vue'
+import Notes from '../Notes.vue'
 import { useAppStore } from '@/stores/app'
 
 defineProps({

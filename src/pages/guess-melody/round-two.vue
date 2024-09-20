@@ -1,13 +1,13 @@
 <template>
   <GameLayout>
-    <Preview :expand="expand" round='3' />
-    <RoundThree :expand="expand" />
+    <Preview :expand="expand" round='2' />
+    <RoundTwo :expand="expand" />
   </GameLayout>
 </template>
 <script setup>
 import GameLayout from '@/layouts/GameLayout.vue'
-import Preview from '@/components/game/Preview.vue'
-import RoundThree from '@/components/game/RoundThree.vue'
+import Preview from '@/components/Game/Preview.vue'
+import RoundTwo from '@/components/Game/Melody/Rounds/MelodyRoundTwo.vue'
 
 const expand = ref(true)
 
