@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex">
     <v-radio-group
-      v-model="activeCategory.one"
+      v-model="activeCategory.three"
       inline
     >
       <v-radio
         v-for="category in rows"
         :key="category.id"
         :value="category.id"
-        :label="String(category.id)"
+        :label="category.name"
         class="width"
         @change="onChangeCategory"
       >
@@ -33,7 +33,7 @@
     class="w-100"
     v-for="row in rows"
     :key="row.id"
-    :title="'песня ' + row.id"
+    :title="row.name"
   >
     <CategoryRow
       class="w-100"
@@ -45,8 +45,9 @@
     />
     <SongList
       class="w-100"
+      activeRound="3"
       v-if="row.melodies.length"
-      :songs="row.melodies"
+      :currentCategory="row"
       @updateRound="handleUpdateActiveSong"
     />
   </Selected>
@@ -121,6 +122,7 @@ const removeActiveCategory = async () => {
 }
 
 onMounted(async () => {
+  await store.getActiveCategory({ stringRoundId: 'three', roundId: 3 })
   await getCategories()
 })
 </script>

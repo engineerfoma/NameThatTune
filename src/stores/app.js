@@ -40,7 +40,7 @@ export const useAppStore = defineStore('app', {
 
     async getRoundFour() {
       const { data } = await round.getById(4)
-      
+
       localStorage.setItem(`sharedRound4`, JSON.stringify(data[0].melodies)) // Сохраняем в Local Storage
       this.roundFour = data
       return this.roundFour
@@ -49,19 +49,35 @@ export const useAppStore = defineStore('app', {
       const { data } = await team.get()
 
       localStorage.setItem('sharedTeams', JSON.stringify(data)) // Сохраняем в Local Storage
-      this.teams = data
+      if (data.length) {
+        this.teams = []
+
+        data.forEach((team) => {
+          team.disabled = true
+          team.new = false
+          return this.teams.push(team)
+        })
+      }
       return this.teams
     },
 
-    changeActiveCategory(payload) {
+    async getActiveCategory(payload) {
+      const { stringRoundId, roundId } = payload
+      const { data } = await round.getById(roundId)
+      const findActiveCategory = data.find((category) => category.status === 'active')
+      this.activeCategory[stringRoundId] = Number(findActiveCategory?.id)
+      console.log(this.activeCategory);
       
+    },
+
+    changeActiveCategory(payload) {
       const { id, value } = payload
       this.activeCategory[id] = Number(value)
       return this.activeCategory
     },
 
     clearActiveCategory(id) {
-      return this.activeCategory[id] = ''
+      return (this.activeCategory[id] = '')
     },
   },
 })

@@ -1,6 +1,7 @@
 <template>
   <div class="row d-flex align-center">
     <div class="row__wrapper">
+      {{ data }}
       <!-- Todo: доработать функционал с блокировкой всей строки -->
       <svg
         class="row__img d-flex align-center justify-center"
@@ -139,20 +140,9 @@ const melodies = computed(() => props.data.melodies)
     line-height: 1.3em;
 
     &_active {
-      // opacity: .4;
-      color: rgba(255, 255, 255, 0.5);
+      color: black;
     }
   }
-
-  // &__img {
-  //   margin-top: 56px;
-  //   margin-right: 35px;
-  // }
-
-  // &__line {
-  //   margin-top: 56px;
-  //   margin-right: 28px;
-  // }
 
   &__img {
     margin-top: 40px;
@@ -172,8 +162,6 @@ const melodies = computed(() => props.data.melodies)
       top: 50%;
       border-radius: 50%;
       background-color: #ffffff33;
-      // width: 65px;
-      // height: 65px;
       width: 52px;
       height: 52px;
       display: flex;

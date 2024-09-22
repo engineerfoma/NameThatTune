@@ -48,6 +48,13 @@
         >
           Смена раунда
         </v-btn>
+        <v-btn
+          class="tune__button"
+          variant="outlined"
+          @click="resetGame"
+        >
+          Начать заново
+        </v-btn>
       </div>
     </v-container>
   </DefaultLayout>
@@ -56,7 +63,9 @@
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import Tabs from '@/components/Admin/Tabs'
 import Teams from '@/components/Admin/Teams'
+import { category, melody, team } from '@/services/api.service'
 import { useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/app'
 
 const rounds = ref([
   {
@@ -76,7 +85,7 @@ const rounds = ref([
     name: 'final-round',
   },
 ])
-
+const store = useAppStore()
 const router = useRouter()
 
 const path = computed(() => router.currentRoute.value.fullPath)
@@ -86,6 +95,27 @@ const activeRound = ref('round-one')
 const changeRound = () => {
   localStorage.setItem(`changeRound`, JSON.stringify(activeRound.value))
 }
+
+const resetGame = async () => {
+  const teams = await store.getTeams()
+  console.log(teams)
+
+  teams.forEach((el) => {
+    team.edit({
+      id: el.id,
+      name: 'Команда ' + el.id,
+      score: 0,
+    })
+  })
+
+  await category.reset()
+  await melody.reset()
+
+  await store.getTeams()
+  localStorage.clear();
+}
+
+store.getTeams()
 </script>
 
 <style lang="scss" scoped>

@@ -31,7 +31,7 @@ export class Category {
   }
 
   // добавить мелоидю в категорию
-  addMelodyInCategory({categoryId, melodyId}, data) {
+  addMelodyInCategory({ categoryId, melodyId }, data) {
     return axios.post(`${this.path}/category/${categoryId}/${melodyId}/`, data)
   }
 
@@ -40,10 +40,18 @@ export class Category {
     return axios.patch(`${this.path}/category/${id}/`, data)
   }
 
-    // активировать категорию
-    activateStatus(categoryId, roundId) {
-      return axios.patch(`${this.path}/category/${categoryId}/active/${roundId}/`, {
+  // сбросить категории
+  reset() {
+    return axios.patch(`${this.path}/category/default/`)
+  }
+
+  // активировать категорию
+  activateStatus(categoryId, roundId) {
+    return axios.patch(
+      `${this.path}/category/${categoryId}/active/${roundId}/`,
+      {
         status: 'active',
-      })
-    }
+      }
+    )
+  }
 }

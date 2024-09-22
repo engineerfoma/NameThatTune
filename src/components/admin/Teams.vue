@@ -4,7 +4,7 @@
       <v-btn
         append-icon="mdi-plus"
         @click="addForm"
-        :disabled="forms.length >= 6 || disabledStateButton"
+        :disabled="teams.length >= 6 || disabledStateButton"
         variant="outlined"
         >Добавить команду</v-btn
       >
@@ -22,10 +22,10 @@
     </div>
     <div
       class="pt-6 d-flex ga-sm-6 flex-row w-100 flex-column"
-      v-if="forms.length"
+      v-if="teams.length"
     >
       <Form
-        v-for="form in forms"
+        v-for="form in teams"
         :key="form.id"
         :data="form"
         @removeForm="removeFormHandler"
@@ -40,18 +40,19 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
 import { team } from '@/services/api.service'
 import { onMounted } from 'vue'
 const store = useAppStore()
-const forms = ref([])
+const { teams } = storeToRefs(store)
 
 const disabledStateButton = computed(() => {
-  return !!forms.value.find((form) => !form.disabled)
+  return !!teams.value.find((form) => !form.disabled)
 })
 
 const addForm = () => {
-  forms.value.push({
+  teams.value.push({
     name: '',
     color: '',
     score: 0,
@@ -65,7 +66,7 @@ const removeAllTeams = async () => {
   if (status !== 200) {
     return alert(`ошибка ${status}`)
   }
-  forms.value = []
+  teams.value = []
   await getTeams()
 }
 
@@ -104,18 +105,7 @@ const handleUpdateForm = async (props) => {
 }
 
 const getTeams = async () => {
-  // const { data } = await team.get()
-  const teams = await store.getTeams()
-
-  if (teams.length) {
-    forms.value = []
-
-    teams.forEach((team) => {
-      team.disabled = true
-      team.new = false
-      return forms.value.push(team)
-    })
-  }
+  return await store.getTeams()
 }
 
 const removeFormHandler = async (index) => {
@@ -125,7 +115,7 @@ const removeFormHandler = async (index) => {
     return alert(`ошибка! ${statusText}`)
   }
 
-  forms.value = forms.value.filter((form) => {
+  teams.value = teams.value.filter((form) => {
     return form.id !== index
   })
   await getTeams()
@@ -149,7 +139,7 @@ const hanldeSaveScore = async (props) => {
     score: Number(resultScore),
   })
 
-  const currentForm = forms.value.find((form) => form.id === props.data.id)
+  const currentForm = teams.value.find((form) => form.id === props.data.id)
   currentForm.score = data.score
   await getTeams()
   return currentForm

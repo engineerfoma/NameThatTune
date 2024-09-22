@@ -39,8 +39,18 @@ export class Melody {
       melodyPath: data.melodyPath,
       songPath: data.songPath,
       status: data.status,
-      completed: data.completed
+      completed: data.completed,
     })
+  }
+
+  // изменить мелодию в 3 раунде для блокировки всей категории
+  editForThirdRound(id) {
+    return axios.patch(`${this.path}/melody/round_3/${id}/completed/`)
+  }
+
+  // сбросить мелодии
+  reset() {
+    return axios.patch(`${this.path}/melody/default/`)
   }
 
   // активировать мелодию

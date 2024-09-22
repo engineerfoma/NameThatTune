@@ -8,8 +8,8 @@
         :class="{ 'note-p': index === 0 }"
       >
         <v-img
-          v-if="note.status === 'active'"
           class="note__single"
+          :class="note.status === 'active' ? 'visible' : 'hidden'"
           width="239"
           cover
           src="@/assets/imgs/note-active.png"
@@ -19,9 +19,11 @@
           </div>
         </v-img>
         <v-img
-          v-else
           class="note__single"
-          :class="{ note__single_completed: note.completed }"
+          :class="[
+            { note__single_completed: note.completed },
+            note.status !== 'active' ? 'visible' : 'hidden',
+          ]"
           width="239"
           cover
           src="@/assets/imgs/note.png"
@@ -45,8 +47,8 @@
         :key="index"
       >
         <v-img
-          v-if="note.status === 'active'"
           class="note__single"
+          :class="note.status === 'active' ? 'visible' : 'hidden'"
           width="239"
           cover
           src="@/assets/imgs/note-active.png"
@@ -56,9 +58,11 @@
           </div>
         </v-img>
         <v-img
-          v-else
           class="note__single"
-          :class="{ note__single_completed: note.completed }"
+          :class="[
+            { note__single_completed: note.completed },
+            note.status !== 'active' ? 'visible' : 'hidden',
+          ]"
           width="239"
           cover
           src="@/assets/imgs/note.png"
@@ -152,5 +156,18 @@ const arrayBottom = computed(() =>
 
 .red {
   background-color: #ea0029cc;
+}
+
+.visible {
+  position: relative;
+  opacity: 1;
+  &__completed {
+    opacity: 0.5;
+  }
+}
+
+.hidden {
+  position: absolute;
+  opacity: 0;
 }
 </style>

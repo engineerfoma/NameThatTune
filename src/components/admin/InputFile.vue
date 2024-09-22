@@ -2,6 +2,7 @@
   <v-file-input
     type="file"
     :key="modelValue"
+    :clearable="false"
     @change="onFileChange"
     accept="audio/*"
     :label="modelValue || 'Добавьте мелодию'"

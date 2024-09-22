@@ -8,7 +8,7 @@
         v-for="category in rows"
         :key="category.id"
         :value="category.id"
-        :label="String(category.id)"
+        :label="category.name"
         class="width"
         @change="onChangeCategory"
       >
@@ -33,7 +33,7 @@
     class="w-100"
     v-for="row in rows"
     :key="row.id"
-    :title="'Категория ' + row.id"
+    :title="row.name"
   >
     <CategoryRow
       class="w-100"
@@ -46,7 +46,8 @@
     <SongList
       class="w-100"
       v-if="row.melodies.length"
-      :songs="row.melodies"
+      activeRound="2"
+      :currentCategory="row"
       @updateRound="handleUpdateActiveSong"
       secondRound
       :rowId="activeCategory?.two"
@@ -125,6 +126,7 @@ const removeActiveCategory = async () => {
 }
 
 onMounted(async () => {
+  await store.getActiveCategory({ stringRoundId: 'two', roundId: 2 })
   await getCategories()
 })
 </script>

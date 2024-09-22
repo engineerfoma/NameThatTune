@@ -1,5 +1,8 @@
 <template>
-  <div class="w-100">
+  <div
+    class="w-100"
+    v-if="currentCategory.melodies"
+  >
     <div class="grid-header mt-6">
       <v-tooltip text="Отменить активную песню">
         <template v-slot:activator="{ props }">
@@ -24,21 +27,22 @@
     <div class="grid w-100">
       <div class="display-grid">
         <v-radio-group
+          v-if="currentCategory.melodies"
           v-model="activeSong.value"
           class="d-flex flex-column justify-space-between"
         >
           <v-radio
-            v-for="song in songs"
+            v-for="song in currentCategory.melodies"
             :key="song.id"
             :value="song.id"
             class="width"
-            @change="onChangeSong"
+            @change="onChangeSong({ id: song.id, categoryId: song.categoryId })"
           />
         </v-radio-group>
         <div>
           <v-form
             class="w-100"
-            v-for="song in songs"
+            v-for="song in currentCategory.melodies"
             :key="song.id"
           >
             <v-container class="w-100">
@@ -48,17 +52,19 @@
                 <div class="w-100 d-flex flex-row align-center flex-sm-nowrap">
                   <v-col cols="12">
                     <div class="d-flex align-center ga-4">
-                      <InputFile
-                        v-model="song.melodyPath"
-                        :id="song.id"
-                        class="w-100"
-                      />
-                      <img
-                        @click="removeMelody(song)"
-                        class="img"
-                        src="@/assets/icons/delete.svg"
-                        alt="delete"
-                      />
+                      <div class="position-relative w-100">
+                        <InputFile
+                          v-model="song.melodyPath"
+                          :id="song.id"
+                          class="w-100"
+                        />
+                        <img
+                          @click="removeMelody(song)"
+                          class="img"
+                          src="@/assets/icons/delete.svg"
+                          alt="delete"
+                        />
+                      </div>
                       <v-checkbox
                         v-tooltip="'Завершить'"
                         v-model="song.completed"
@@ -91,16 +97,16 @@
           </v-form>
         </div>
       </div>
-      <div>
+      <div class="d-flex flex-column justify-space-between">
         <v-form
-          v-for="song in songs"
+          v-for="song in currentCategory.melodies"
           :key="song.id"
           :label="String(song.id)"
           :value="song.id"
         >
           <v-container>
             <v-row
-              class="w-100 d-flex flex-row align-center flex-sm-nowrap justify-space-between"
+              class="d-flex flex-row align-start flex-sm-nowrap justify-space-between"
             >
               <div class="w-100 d-flex flex-row align-center flex-sm-nowrap">
                 <v-col
@@ -108,17 +114,19 @@
                   class="w100"
                 >
                   <div class="d-flex align-center ga-4">
-                    <InputFile
-                      v-model="song.songPath"
-                      :id="song.id"
-                      song
-                    />
-                    <img
-                      @click="removeSong(song)"
-                      class="img"
-                      src="@/assets/icons/delete.svg"
-                      alt="delete"
-                    />
+                    <div class="position-relative w-100">
+                      <InputFile
+                        v-model="song.songPath"
+                        :id="song.id"
+                        song
+                      />
+                      <img
+                        @click="removeSong(song)"
+                        class="img"
+                        src="@/assets/icons/delete.svg"
+                        alt="delete"
+                      />
+                    </div>
                   </div>
                   <audio
                     v-if="song.songPath"
@@ -134,10 +142,15 @@
                       "
                       type="audio/mpeg"
                     />
-                    Your browser does not support the audio element.
+                    Your browser does not support the audio esdlement.
                   </audio>
                 </v-col>
               </div>
+              <ModalAddPointsInCategory
+                :data="teams"
+                :score="song.points"
+                @saveScore="onChangeScore"
+              />
             </v-row>
           </v-container>
         </v-form>
@@ -146,16 +159,22 @@
   </div>
 </template>
 <script setup>
-import { melody, round } from '../../services/api.service'
+import { storeToRefs } from 'pinia'
+import { melody, team, category } from '../../services/api.service'
+import { useAppStore } from '@/stores/app'
+import ModalAddPointsInCategory from './ModalAddPointsInCategory.vue'
+const store = useAppStore()
+const { teams } = storeToRefs(store)
 
 const emits = defineEmits(['updateRound'])
 const props = defineProps({
-  songs: {
-    type: Array,
+  currentCategory: {
+    type: Object,
     default: null,
   },
   secondRound: Boolean,
   rowId: Number,
+  activeRound: String,
 })
 
 const audio = ref([])
@@ -177,8 +196,11 @@ const activeSong = reactive({
   value: '',
 })
 
-const onChangeSong = async (event) => {
-  await melody.activateStatus(event.target.value)
+const onChangeSong = async (data) => {
+  await melody.activateStatus(data.id)
+  if (props.activeRound !== '4') {
+    await category.activateStatus(data.categoryId, Number(props.activeRound))
+  }
   emits('updateRound')
 }
 
@@ -208,7 +230,9 @@ const removeSong = async (data) => {
 
 const removeActiveSong = async () => {
   if (activeSong.value) {
-    const currentSong = props.songs.find((song) => song.id === activeSong.value)
+    const currentSong = props.currentCategory.melodies.find(
+      (song) => song.id === activeSong.value
+    )
     activeSong.value = ''
     await melody.edit({
       id: currentSong.id,
@@ -220,18 +244,33 @@ const removeActiveSong = async () => {
 
 const onCompleted = async (data) => {
   data.completed = !data.completed
-  try {
-    const response = await melody.edit({
-      id: data.id,
-      completed: data.completed,
-    })
-    data.completed = response.data.completed
-  } catch (e) {
-    alert(`ошибка: ${e}`)
+  if (props.activeRound === '3') {
+    try {
+      await melody.editForThirdRound(data.id)
+    } catch (e) {
+      alert(`ошибка: ${e}`)
+    }
+  } else {
+    try {
+      const response = await melody.edit({
+        id: data.id,
+        completed: data.completed,
+      })
+      data.completed = response.data.completed
+    } catch (e) {
+      alert(`ошибка: ${e}`)
+    }
+    emits('updateRound')
   }
-  emits('updateRound')
 }
 
+const onChangeScore = async (data) => {
+  await team.edit({
+    id: data.id,
+    score: Number(data.score),
+  })
+  await store.getTeams()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -244,6 +283,9 @@ const onCompleted = async (data) => {
   width: 20px;
   margin-bottom: 20px;
   transition: opacity 0.3s ease;
+  position: absolute;
+  right: 20px;
+  top: 18px;
 
   &:hover {
     cursor: pointer;
@@ -280,5 +322,9 @@ const onCompleted = async (data) => {
   display: grid;
   grid-template-columns: 40px 1fr;
   gap: 30px;
+}
+
+.gap {
+  gap: 45px;
 }
 </style>

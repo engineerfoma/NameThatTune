@@ -10,14 +10,10 @@ import Preview from '@/components/Game/Preview.vue'
 import RoundOne from '@/components/Game/Melody/Rounds/MelodyRoundOne.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-console.log(router);
 
 window.addEventListener('storage', (event) => {
   if (event.key === 'changeRound') {
-    // store.roundFour = JSON.parse(event.newValue) // Обновляем состояние
-    
     router.push('/guess-melody/' + JSON.parse(event.newValue))
-    
   }
 })
 

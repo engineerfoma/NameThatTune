@@ -64,6 +64,7 @@ let interval = null
 
 watch(timerStatus, () => {
   if (timerStatus.value) {
+    timer.value -= 1
     interval = setInterval(() => {
       timer.value -= 1
     }, 1000)
