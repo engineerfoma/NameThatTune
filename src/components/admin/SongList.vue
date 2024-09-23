@@ -27,8 +27,7 @@
     <div class="grid w-100">
       <div class="display-grid">
         <v-radio-group
-          v-if="currentCategory.melodies"
-          v-model="activeSong.value"
+          v-model="currentCategory.activeMelodyId"
           class="d-flex flex-column justify-space-between"
         >
           <v-radio
@@ -192,15 +191,11 @@ const onPause = () => {
   }
 }
 
-const activeSong = reactive({
-  value: '',
-})
-
 const onChangeSong = async (data) => {
   await melody.activateStatus(data.id)
-  if (props.activeRound !== '4') {
-    await category.activateStatus(data.categoryId, Number(props.activeRound))
-  }
+  // if (props.activeRound !== '4') {
+  //   await category.activateStatus(data.categoryId, Number(props.activeRound))
+  // }
   emits('updateRound')
 }
 
@@ -229,24 +224,18 @@ const removeSong = async (data) => {
 }
 
 const removeActiveSong = async () => {
-  if (activeSong.value) {
-    const currentSong = props.currentCategory.melodies.find(
-      (song) => song.id === activeSong.value
-    )
-    activeSong.value = ''
-    await melody.edit({
-      id: currentSong.id,
-      status: 'default',
-    })
-    emits('updateRound')
-  }
+  await melody.reset()
+  await category.edit(props.currentCategory.id, {
+    activeMelodyId: 0,
+  })
+  emits('updateRound')
 }
 
 const onCompleted = async (data) => {
   data.completed = !data.completed
   if (props.activeRound === '3') {
     try {
-      await melody.editForThirdRound(data.id)
+      await melody.editForThirdRound(data.id, data.completed)
     } catch (e) {
       alert(`ошибка: ${e}`)
     }
@@ -260,8 +249,8 @@ const onCompleted = async (data) => {
     } catch (e) {
       alert(`ошибка: ${e}`)
     }
-    emits('updateRound')
   }
+  emits('updateRound')
 }
 
 const onChangeScore = async (data) => {

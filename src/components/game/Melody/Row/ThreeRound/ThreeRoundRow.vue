@@ -1,7 +1,6 @@
 <template>
   <div class="row d-flex align-center">
     <div class="row__wrapper">
-      {{ data }}
       <!-- Todo: доработать функционал с блокировкой всей строки -->
       <svg
         class="row__img d-flex align-center justify-center"

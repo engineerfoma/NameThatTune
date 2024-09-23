@@ -56,7 +56,7 @@
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { category } from '@/services/api.service'
+import { category, melody } from '@/services/api.service'
 import { useAppStore } from '@/stores/app'
 import SongList from '../SongList.vue'
 import { storeToRefs } from 'pinia'
@@ -104,30 +104,17 @@ const handleUpdateActiveSong = async () => {
 
 const onChangeCategory = async (event) => {
   await category.activateStatus(event.target.value, 2)
-  store.changeActiveCategory({
-    id: 'two',
-    value: event.target.value,
-  })
   await getCategories()
 }
 
 const removeActiveCategory = async () => {
-  if (activeCategory.value) {
-    const currentCategory = rows.value.find(
-      (category) => category.id === activeCategory.value.two
-    )
-
-    store.clearActiveCategory('two')
-    await category.edit(currentCategory.id, {
-      status: 'default',
-    })
-    await getCategories()
-  }
+  await category.reset()
+  await melody.reset()
+  await getCategories()
 }
 
 onMounted(async () => {
-  await store.getActiveCategory({ stringRoundId: 'two', roundId: 2 })
-  await getCategories()
+  await handleUpdateActiveSong()
 })
 </script>
 

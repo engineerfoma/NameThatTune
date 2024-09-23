@@ -18,13 +18,14 @@ export const useAppStore = defineStore('app', {
   actions: {
     async getRoundOne() {
       const { data } = await round.getById(1)
-
+      this.activeCategory.one = data.find(category => category.status === 'active')?.id
       localStorage.setItem(`sharedRound1`, JSON.stringify(data)) // Сохраняем в Local Storage
       this.roundOne = data
       return this.roundOne
     },
     async getRoundTwo() {
       const { data } = await round.getById(2)
+      this.activeCategory.two = data.find(category => category.status === 'active')?.id
 
       localStorage.setItem(`sharedRound2`, JSON.stringify(data)) // Сохраняем в Local Storage
       this.roundTwo = data
@@ -32,6 +33,7 @@ export const useAppStore = defineStore('app', {
     },
     async getRoundThree() {
       const { data } = await round.getById(3)
+      this.activeCategory.three = data.find(category => category.status === 'active')?.id
 
       localStorage.setItem(`sharedRound3`, JSON.stringify(data)) // Сохраняем в Local Storage
       this.roundThree = data
@@ -61,14 +63,13 @@ export const useAppStore = defineStore('app', {
       return this.teams
     },
 
-    async getActiveCategory(payload) {
-      const { stringRoundId, roundId } = payload
-      const { data } = await round.getById(roundId)
-      const findActiveCategory = data.find((category) => category.status === 'active')
-      this.activeCategory[stringRoundId] = Number(findActiveCategory?.id)
-      console.log(this.activeCategory);
-      
-    },
+    // async getActiveCategory(payload) {
+    //   const { stringRoundId, roundId } = payload
+    //   const { data } = await round.getById(roundId)
+    //   const findActiveCategory = data.find((category) => category.status === 'active')
+    //   this.activeCategory[stringRoundId] = Number(findActiveCategory?.id)
+    //   console.log(this.activeCategory);
+    // },
 
     changeActiveCategory(payload) {
       const { id, value } = payload

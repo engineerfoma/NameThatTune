@@ -44,8 +44,8 @@ export class Melody {
   }
 
   // изменить мелодию в 3 раунде для блокировки всей категории
-  editForThirdRound(id) {
-    return axios.patch(`${this.path}/melody/round_3/${id}/completed/`)
+  editForThirdRound(id, state) {
+    return axios.patch(`${this.path}/melody/round_3/${id}/completed/${state}/`)
   }
 
   // сбросить мелодии
