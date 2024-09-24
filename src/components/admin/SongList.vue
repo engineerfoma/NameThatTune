@@ -4,7 +4,7 @@
     v-if="currentCategory.melodies"
   >
     <div class="grid-header mt-6">
-      <v-tooltip text="Отменить активную песню">
+      <v-tooltip text="сбросить состояние мелодий">
         <template v-slot:activator="{ props }">
           <img
             @click="removeActiveSong"
@@ -193,9 +193,6 @@ const onPause = () => {
 
 const onChangeSong = async (data) => {
   await melody.activateStatus(data.id)
-  // if (props.activeRound !== '4') {
-  //   await category.activateStatus(data.categoryId, Number(props.activeRound))
-  // }
   emits('updateRound')
 }
 
@@ -254,9 +251,11 @@ const onCompleted = async (data) => {
 }
 
 const onChangeScore = async (data) => {
+  const resultScore = Number(data.team.score) + Number(data.score)
+
   await team.edit({
-    id: data.id,
-    score: Number(data.score),
+    id: data.team.id,
+    score: resultScore,
   })
   await store.getTeams()
 }

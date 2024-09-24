@@ -63,14 +63,6 @@ export const useAppStore = defineStore('app', {
       return this.teams
     },
 
-    // async getActiveCategory(payload) {
-    //   const { stringRoundId, roundId } = payload
-    //   const { data } = await round.getById(roundId)
-    //   const findActiveCategory = data.find((category) => category.status === 'active')
-    //   this.activeCategory[stringRoundId] = Number(findActiveCategory?.id)
-    //   console.log(this.activeCategory);
-    // },
-
     changeActiveCategory(payload) {
       const { id, value } = payload
       this.activeCategory[id] = Number(value)

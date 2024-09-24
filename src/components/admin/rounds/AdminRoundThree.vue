@@ -17,7 +17,7 @@
         <div>Активная песня</div>
       </template>
     </v-radio-group>
-    <v-tooltip text="Отменить активную песню">
+    <v-tooltip text="сбросить состояние мелодий">
       <template v-slot:activator="{ props }">
         <img
           @click="removeActiveCategory"

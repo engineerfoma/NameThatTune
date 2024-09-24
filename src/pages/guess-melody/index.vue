@@ -65,6 +65,7 @@ import Tabs from '@/components/Admin/Tabs'
 import Teams from '@/components/Admin/Teams'
 import { category, melody, team } from '@/services/api.service'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
 
 const rounds = ref([
@@ -87,7 +88,7 @@ const rounds = ref([
 ])
 const store = useAppStore()
 const router = useRouter()
-
+const { teams } = storeToRefs(store)
 const path = computed(() => router.currentRoute.value.fullPath)
 
 const activeRound = ref('round-one')
@@ -97,10 +98,7 @@ const changeRound = () => {
 }
 
 const resetGame = async () => {
-  const teams = await store.getTeams()
-  console.log(teams)
-
-  teams.forEach((el) => {
+  teams.value.forEach((el) => {
     team.edit({
       id: el.id,
       name: 'Команда ' + el.id,
@@ -108,11 +106,14 @@ const resetGame = async () => {
     })
   })
 
-  await category.reset()
   await melody.reset()
-
+  await category.reset()
+  localStorage.clear()
   await store.getTeams()
-  localStorage.clear();
+  await store.getRoundOne()
+  await store.getRoundTwo()
+  await store.getRoundThree()
+  await store.getRoundFour()
 }
 
 store.getTeams()

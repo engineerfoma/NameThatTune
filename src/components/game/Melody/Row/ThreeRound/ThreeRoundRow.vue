@@ -1,7 +1,7 @@
 <template>
   <div
     class="row d-flex align-center"
-    :class="{ completed: data.completed }"
+    :class="{ completed: data.completed && data.activeMelodyId === 0}"
   >
     <div class="row__wrapper">
       <svg
@@ -61,7 +61,7 @@
           data.status === 'active' && melody.status !== 'active'
             ? 'visible'
             : 'hidden',
-          melody.completed ? 'visible__completed' : '',
+          melody.completed && data.status !== 'active' ? 'visible__completed' : '',
         ]"
         width="137"
         cover

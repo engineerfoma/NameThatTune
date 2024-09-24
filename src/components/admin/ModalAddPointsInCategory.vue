@@ -25,7 +25,7 @@
               <v-btn
                 class="w-100 text-none font-weight-regular mb-2"
                 variant="tonal"
-                @click="handleSaveButton({ id: team.id, score})"
+                @click="handleSaveButton({ team, score })"
               >
                 {{ team.name }}
               </v-btn>

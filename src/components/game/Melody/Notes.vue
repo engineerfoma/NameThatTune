@@ -99,13 +99,9 @@ const arrayBottom = computed(() =>
 <style lang="scss" scoped>
 .notes {
   position: relative;
-  // margin-left: 29px;
   margin: 181px auto 0;
   display: flex;
   flex-direction: column;
-  // max-width: 675px;
-  // row-gap: 185px;
-  // column-gap: 99px;
   height: 800px;
 
   &__top {

@@ -1,5 +1,8 @@
 <template>
-  <v-tooltip :text="data.name" location="bottom">
+  <v-tooltip
+    :text="data.name"
+    location="bottom"
+  >
     <template v-slot:activator="{ props }">
       <v-img
         class="total align-center"
@@ -8,7 +11,14 @@
         width="192"
         height="116"
       >
-        {{ data.score }}
+        <div class="d-flex flex-column">
+          <span>
+            {{ data.name }}
+          </span>
+          <span>
+            {{ data.score }}
+          </span>
+        </div>
       </v-img>
     </template>
   </v-tooltip>
@@ -33,5 +43,13 @@ const path = computed(() => {
   font-weight: 700;
   text-align: center;
   color: white;
+  span {
+    font-size: 30px;
+    line-height: 1.25;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
 }
 </style>
