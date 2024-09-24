@@ -1,7 +1,9 @@
 <template>
-  <div class="row d-flex align-center">
+  <div
+    class="row d-flex align-center"
+    :class="{ completed: data.completed }"
+  >
     <div class="row__wrapper">
-      <!-- Todo: доработать функционал с блокировкой всей строки -->
       <svg
         class="row__img d-flex align-center justify-center"
         :class="{ row__border_active: data.status === 'active' }"
@@ -40,7 +42,7 @@
       >
       </v-img>
       <v-img
-        class="row__note"
+        class="row__note row-active"
         :class="melody.status === 'active' ? 'visible' : 'hidden'"
         width="137"
         cover
@@ -54,7 +56,7 @@
         </div>
       </v-img>
       <v-img
-        class="row__note"
+        class="row__note row-current"
         :class="[
           data.status === 'active' && melody.status !== 'active'
             ? 'visible'
@@ -86,7 +88,7 @@
         src="@/assets/imgs/note.png"
       >
         <div
-          v-show="!melody.completed"
+          v-show="!data.completed"
           class="row__note_wrapper"
         >
           {{ melody.points }}
@@ -191,5 +193,12 @@ const melodies = computed(() => props.data.melodies)
 .hidden {
   position: absolute;
   opacity: 0;
+}
+
+.completed {
+  transition: opacity 0.4s ease;
+  *:not(.row-active, .visible__completed, .row-current) {
+    opacity: 0.6;
+  }
 }
 </style>

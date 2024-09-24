@@ -21,7 +21,7 @@
         <v-img
           class="note__single"
           :class="[
-            { note__single_completed: note.completed },
+            note.status !== 'active' && note.completed ? 'note__single_completed' : '',
             note.status !== 'active' ? 'visible' : 'hidden',
           ]"
           width="239"
@@ -60,7 +60,7 @@
         <v-img
           class="note__single"
           :class="[
-            { note__single_completed: note.completed },
+            note.status !== 'active' && note.completed ? 'note__single_completed' : '',
             note.status !== 'active' ? 'visible' : 'hidden',
           ]"
           width="239"
@@ -125,7 +125,7 @@ const arrayBottom = computed(() =>
     position: relative;
 
     &_completed {
-      opacity: 0.3;
+      opacity: 0.3!important;
     }
 
     &_diagonal {
