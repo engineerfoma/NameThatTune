@@ -129,7 +129,7 @@
                   </div>
                   <audio
                     v-if="song.songPath"
-                    :key="song.id"
+                    :key="song.songPath"
                     controls
                     class="w-100"
                   >
