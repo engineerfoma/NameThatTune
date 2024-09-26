@@ -8,7 +8,7 @@
         class="timer"
         :class="{ timer__active: timerStatus }"
       >
-        00:{{ timer }}
+        00:{{ isZero }}{{ timer }}
       </div>
 
       <div class="aside">
@@ -60,7 +60,19 @@ const rows = ref(null)
 const timer = ref(30)
 const timerStatus = ref(false)
 
+const isZero = computed(() => {
+  if (timer.value < 10) {
+    return 0
+  }
+})
+
 let interval = null
+
+watch(timer, () => {
+  if (timer.value === 0) {
+    clearInterval(interval) // Останавливаем счётчик
+  }
+})
 
 watch(timerStatus, () => {
   if (timerStatus.value) {

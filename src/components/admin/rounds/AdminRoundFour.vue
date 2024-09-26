@@ -1,8 +1,8 @@
 <template>
   <SongList
     class="w-100"
-    v-if="row?.melodies"
-    :currentCategory="row"
+    v-if="roundFour[0]?.melodies"
+    :currentCategory="roundFour[0]"
     activeRound="4"
     secondRound
     @updateRound="handleUpdateActiveSong"
@@ -12,17 +12,14 @@
 import SongList from '../SongList.vue'
 import { onMounted } from 'vue'
 import { useAppStore } from '@/stores/app'
-
-const row = ref(null)
+import { storeToRefs } from 'pinia'
 
 const store = useAppStore()
 
+const { roundFour } = storeToRefs(store)
 const getMelodies = async () => {
   try {
-    const data = await store.getRoundFour()
-    console.log(data)
-
-    row.value = data[0]
+    await store.getRoundFour()
   } catch (e) {
     alert(`ошибка: ${e}`)
   }

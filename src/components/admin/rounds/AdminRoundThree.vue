@@ -5,7 +5,7 @@
       inline
     >
       <v-radio
-        v-for="category in rows"
+        v-for="category in roundThree"
         :key="category.id"
         :value="category.id"
         :label="category.name"
@@ -31,7 +31,7 @@
   </div>
   <Selected
     class="w-100"
-    v-for="row in rows"
+    v-for="row in roundThree"
     :key="row.id"
     :title="row.name"
   >
@@ -59,11 +59,9 @@ import { storeToRefs } from 'pinia'
 import { category, melody } from '@/services/api.service'
 import { useAppStore } from '@/stores/app'
 
-const rows = ref([])
-
 const store = useAppStore()
 
-const { activeCategory } = storeToRefs(store)
+const { activeCategory, roundThree } = storeToRefs(store)
 
 const handleUpdateState = (data) => {
   data.disabled = false
@@ -89,8 +87,7 @@ const handleCancelChangeRow = async (data) => {
 
 const getCategories = async () => {
   try {
-    const data = await store.getRoundThree()
-    rows.value = data
+    await store.getRoundThree()
   } catch (e) {
     alert(`ошибка: ${e}`)
   }

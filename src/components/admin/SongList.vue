@@ -73,7 +73,7 @@
                     <audio
                       v-if="song.melodyPath"
                       ref="audio"
-                      :key="song.id"
+                      :key="song.melodyPath"
                       @play="onPlay"
                       @pause="onPause"
                       controls
@@ -82,7 +82,7 @@
                       <source
                         :src="
                           song.melodyPath
-                            ? `http://localhost:3000/src/assets/melodies/${song.melodyPath}`
+                            ? `/src/assets/melodies/${song.melodyPath}`
                             : null
                         "
                         type="audio/mpeg"
@@ -136,7 +136,7 @@
                     <source
                       :src="
                         song.songPath
-                          ? `http://localhost:3000/src/assets/shortSongs/${song.songPath}`
+                          ? `/src/assets/shortSongs/${song.songPath}`
                           : null
                       "
                       type="audio/mpeg"
@@ -149,6 +149,7 @@
                 :data="teams"
                 :score="song.points"
                 @saveScore="onChangeScore"
+                :activeRound="activeRound"
               />
             </v-row>
           </v-container>

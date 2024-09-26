@@ -16,6 +16,14 @@
       </template>
       <v-card title="Выбирите команду для начисления очков">
         <v-card-text>
+          <v-text-field
+            v-if="activeRound === '2'"
+            v-model="diff"
+            label="Введи количество очков"
+            type="number"
+            variant="outlined"
+            required
+          ></v-text-field>
           <v-row
             dense
             v-for="team in data"
@@ -47,11 +55,17 @@ const props = defineProps({
   score: {
     type: Number,
   },
+  activeRound: String,
 })
+const diff = ref(0)
 const dialog = ref(false)
 
-const handleSaveButton = (props) => {
-  emits('saveScore', props)
+const handleSaveButton = (data) => {
+  if (props.activeRound === '2') {
+    emits('saveScore', { team: data.team, score: diff.value })
+  } else {
+    emits('saveScore', data)
+  }
   dialog.value = false
 }
 </script>
