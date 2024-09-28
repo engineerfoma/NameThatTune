@@ -10,9 +10,8 @@
 // );
 
 @font-face {
-  font-family: 'BebasNeueBold';
-  src: url('../assets/fonts/BebasNeueBold.ttf') format('truetype'),
-    url('../assets/fonts/BebasNeueBold.woff') format('woff');
+  font-family: 'Bebas Neue';
+  src: url('../assets/fonts/BebasNeueBold.ttf');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -23,9 +22,9 @@
   margin-left: 6px;
 }
 
-* {
-  // box-sizing: border-box;
-  // overflow-y: scroll;
+.game-text {
+  font-family: 'Bebas Neue';
+  line-height: 1;
 }
 
 .red {
@@ -33,5 +32,5 @@
 }
 
 .current {
-  background-color: #FFFFFF80;
+  background-color: #ffffff80;
 }

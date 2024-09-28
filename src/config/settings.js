@@ -1,1 +1,1 @@
-export const apiPath = 'http://212.67.8.186:8080/api'
+export const apiPath = import.meta.env.DEV ? 'http://212.67.8.186:8080/api' : 'http://localhost:8080/api'

@@ -14,7 +14,7 @@
           cover
           src="@/assets/imgs/note-active.png"
         >
-          <div class="note__single_title red">
+          <div class="note__single_title red game-text">
             {{ note.points }}
           </div>
         </v-img>
@@ -28,7 +28,7 @@
           cover
           src="@/assets/imgs/note.png"
         >
-          <div class="note__single_title">
+          <div class="note__single_title game-text">
             {{ note.points }}
           </div>
         </v-img>
@@ -53,7 +53,7 @@
           cover
           src="@/assets/imgs/note-active.png"
         >
-          <div class="note__single_title red">
+          <div class="note__single_title red game-text">
             {{ note.points }}
           </div>
         </v-img>
@@ -67,7 +67,7 @@
           cover
           src="@/assets/imgs/note.png"
         >
-          <div class="note__single_title">
+          <div class="note__single_title game-text">
             {{ note.points }}
           </div>
         </v-img>
@@ -140,7 +140,7 @@ const arrayBottom = computed(() =>
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 36px;
+      font-size: 55px;
       font-weight: 700;
     }
   }

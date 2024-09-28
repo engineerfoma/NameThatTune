@@ -5,7 +5,7 @@
       class="d-flex h-100"
     >
       <div
-        class="timer"
+        class="timer game-text"
         :class="{ timer__active: timerStatus }"
       >
         00:{{ isZero }}{{ timer }}
@@ -119,7 +119,7 @@ rows.value = store.roundFour
   position: absolute;
   left: 6%;
   top: 60%;
-  font-size: 100px;
+  font-size: 120px;
   font-weight: 700;
   transition: color 0.3s ease;
   color: rgba(255, 255, 255, 1);

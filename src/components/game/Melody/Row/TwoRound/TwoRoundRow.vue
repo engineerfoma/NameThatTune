@@ -21,7 +21,7 @@
       </svg>
       <span
         :class="{ row__title_active: data.status === 'active' }"
-        class="row__title text-center"
+        class="row__title text-center game-text text-truncate"
         :title="data.name.toUpperCase()"
         >{{ data.name.toUpperCase() }}</span
       >
@@ -46,7 +46,7 @@
         src="@/assets/imgs/note-active.png"
       >
         <div
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
           :class="{ red: melody.status === 'active' }"
         >
           {{ points }}
@@ -66,7 +66,7 @@
       >
         <div
           v-show="!melody.completed"
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
           :class="{ current: data.status === 'active' }"
         >
           {{ points }}
@@ -86,7 +86,7 @@
       >
         <div
           v-show="!melody.completed"
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
         >
           {{ points }}
         </div>
@@ -124,18 +124,13 @@ const props = defineProps({
   }
   &__title {
     position: absolute;
-    font-size: 32px;
-    font-weight: 500;
+    max-width: 400px;
+    font-size: 48px;
+    font-weight: 700;
     color: white;
     padding-top: 43px;
     margin-right: 35px;
     padding-right: 20px;
-    width: fit-content;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.3em;
 
     &_active {
       color: black;
@@ -165,7 +160,7 @@ const props = defineProps({
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 27px;
+      font-size: 30px;
       font-weight: 700;
     }
   }

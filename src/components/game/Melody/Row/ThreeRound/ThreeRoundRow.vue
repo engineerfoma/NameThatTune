@@ -24,7 +24,7 @@
       </svg>
       <span
         :class="{ row__title_active: data.status === 'active' }"
-        class="row__title"
+        class="row__title game-text"
         :title="data.name.toUpperCase()"
         >{{ data.name.toUpperCase() }}</span
       >
@@ -49,7 +49,7 @@
         src="@/assets/imgs/note-active.png"
       >
         <div
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
           :class="{ red: melody.status === 'active' }"
         >
           {{ melody.points }}
@@ -69,7 +69,7 @@
       >
         <div
           v-show="!melody.completed"
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
           :class="{ current: data.status === 'active' }"
         >
           {{ melody.points }}
@@ -89,7 +89,7 @@
       >
         <div
           v-show="!data.completed"
-          class="row__note_wrapper"
+          class="row__note_wrapper game-text"
         >
           {{ melody.points }}
         </div>
@@ -128,8 +128,8 @@ const melodies = computed(() => props.data.melodies)
   }
   &__title {
     position: absolute;
-    font-size: 32px;
-    font-weight: 500;
+    font-size: 65px;
+    font-weight: 700;
     color: white;
     padding-top: 43px;
     margin-right: 35px;

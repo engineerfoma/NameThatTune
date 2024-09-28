@@ -11,7 +11,7 @@
         width="192"
         height="116"
       >
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column game-text">
           <span>
             {{ data.name }}
           </span>
@@ -44,7 +44,7 @@ const path = computed(() => {
   text-align: center;
   color: white;
   span {
-    font-size: 30px;
+    font-size: 35px;
     line-height: 1.25;
     overflow: hidden;
     display: -webkit-box;
